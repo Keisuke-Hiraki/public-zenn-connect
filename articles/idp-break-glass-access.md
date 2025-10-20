@@ -1,5 +1,5 @@
 ---
-title: "AWS の IdP 障害に備えて緊急時アクセス (Break-Glass Access) の手順を用意しよう"
+title: "AWS の IdP 障害に備えて Break-Glass Access (緊急時アクセス) の手順を用意しよう"
 emoji: "🚨"
 type: "tech"
 topics: ["aws", "iamidentitycenter", "organizations"]
