@@ -19,7 +19,7 @@ https://health.aws.amazon.com/health/status#multipleservices-us-east-1_176094880
 
 今回は IAM Identity Center が障害を受けた場合を想定したケースをまとめてみます。
 
-## IAM Identity Center はリージョナルサービス
+## IAM Identity Center はリージョナルサービス？
 
 AWS IAM Identity Center は、単一障害点を防ぐために Amazon S3 や Amazon EC2 などの高可用性で耐久性のある AWS サービスを使用しており高可用性を実現しています。
 
