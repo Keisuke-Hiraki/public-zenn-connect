@@ -57,7 +57,7 @@ Break-Glass Access とは、何か調べてみると以下のように説明さ�
 
 最初のステップは Organizations 内に緊急アクセスアカウントを用意します。
 
-![](images/keisuke-poc2025-10-21-01-51-37.png)
+![](/images/keisuke-poc2025-10-21-01-51-37.png)
 
 平常時では緊急アクセスアカウントへのアクセスができることは望ましくないため、このアカウントへのアクセスには厳重に管理する必要があります。
 
@@ -71,7 +71,7 @@ Break-Glass Access とは、何か調べてみると以下のように説明さ�
 - 緊急アクセスアカウントと 3rd Party IdP とフェデレーションで接続する緊急オペレーションロールを作成する
 - 緊急オペレーションからのアクセスを委任する緊急アクセスロールを各ワークロードアカウントに作成する
 
-![](images/keisuke-poc2025-10-21-02-12-59.png)
+![](/images/keisuke-poc2025-10-21-02-12-59.png)
 
 3rd Party IdP の緊急アクセスグループにメンバーを平常時に割り当てないことで平常時には誰も緊急アクセスアカウントにはログインできない状態を実現できます。
 
@@ -79,7 +79,7 @@ Break-Glass Access とは、何か調べてみると以下のように説明さ�
 
 緊急時に今までメンバーを割り当てていなかった緊急アクセスグループにメンバーを割り当てることで各ワークロードへ緊急用のロールを活用しアクセスします。
 
-![](images/keisuke-poc2025-10-21-02-22-51.png)
+![](/images/keisuke-poc2025-10-21-02-22-51.png)
 
 詳細は以下をご参照ください。
 
@@ -91,7 +91,7 @@ https://docs.aws.amazon.com/singlesignon/latest/userguide/emergency-access-imple
 
 最初のステップは外部 IdP の有無関係なく、Organizations 内に緊急アクセスアカウントを用意します。
 
-![](images/keisuke-poc2025-10-21-01-52-20.png)
+![](/images/keisuke-poc2025-10-21-01-52-20.png)
 
 外部 IdP ありの場合と同様で、このアカウントは厳重に管理する必要があります。
 
@@ -99,7 +99,7 @@ https://docs.aws.amazon.com/singlesignon/latest/userguide/emergency-access-imple
 
 外部 IdP ではグループを設けましたが、IAM Identity Center を IdP とする場合はそれができないため、緊急アクセスアカウントにて IAM ユーザーを作成します。
 
-![](images/keisuke-poc2025-10-21-02-46-51.png)
+![](/images/keisuke-poc2025-10-21-02-46-51.png)
 
 1 人のみ作成してしまうと何かの設定ミスなどで利用できない場合にロックダウンしてしまうため、少なくとも 2 人のユーザーを確保することが推奨のようです。
 
@@ -115,7 +115,7 @@ https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/d
 
 ただし、管理が煩雑になるため可能な限り少ないユーザーを持つことが望ましいです。
 
-![](images/keisuke-poc2025-10-21-02-57-02.png)
+![](/images/keisuke-poc2025-10-21-02-57-02.png)
 
 ## どんなロールを割り当てるべきか
 
@@ -123,7 +123,7 @@ https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/d
 
 そのためむやみに管理者権限を付与せず、緊急時に必要な権限のみ（例えばバックアップを取得する権限や EC2 の停止起動の権限など）与えることが望ましいです。
 
-![](images/keisuke-poc2025-10-21-02-33-14.png)
+![](/images/keisuke-poc2025-10-21-02-33-14.png)
 *AWS 公式ドキュメント How to design emergency role, account, and group mapping より*
 
 https://docs.aws.amazon.com/singlesignon/latest/userguide/emergency-access-planning.html
