@@ -5,11 +5,12 @@ type: "tech"
 topics: ["aws", "iamidentitycenter", "organizations"]
 published: true
 published_at: 2025-10-21 07:00
+publication_name: cscloud_blog
 ---
 
 こんにちは、CSC の平木です！
 
-昨日（2025/10/20）16 時頃 (JST) 、us-east-1 の複数のサービスのエラー率が上昇する大規模障害が発生しました。
+昨日（2025/10/20）16 時頃 (JST) 、us-east-1 の複数のサービスにてエラー率が上昇する大規模障害が発生しました。
 
 https://health.aws.amazon.com/health/status?eventID=arn:aws:health:us-east-1::event/MULTIPLE_SERVICES/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE_BA540_514A652BE1A
 
