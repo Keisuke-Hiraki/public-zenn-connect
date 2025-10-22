@@ -58,7 +58,7 @@ Google Cloud のテナント構成はツリー状で考えた時のルートに�
 - Prowler CLI
 - gcloud CLI
 
-Prowler CLI のインストール方法は様々ですが、今回は pip でインストールしました。（流行りの uv は対応してなさそう？）
+Prowler CLI のインストール方法は様々ですが、今回は pip でインストールしました。
 
 ```bash
 pip install prowler
