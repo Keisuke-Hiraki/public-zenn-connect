@@ -4,7 +4,7 @@ emoji: "✅"
 type: "tech"
 topics: ["googlecloud", "prowler"]
 published: true
-published_at: 2025-10-22 07:00
+published_at: 2025-10-23 07:00
 publication_name: cscloud_blog
 ---
 
