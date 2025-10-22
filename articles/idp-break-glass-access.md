@@ -11,7 +11,7 @@ published_at: 2025-10-21 07:00
 
 昨日（2025/10/20）16 時頃 (JST) 、us-east-1 の複数のサービスのエラー率が上昇する大規模障害が発生しました。
 
-https://health.aws.amazon.com/health/status#multipleservices-us-east-1_1760948801
+https://health.aws.amazon.com/health/status?eventID=arn:aws:health:us-east-1::event/MULTIPLE_SERVICES/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE_BA540_514A652BE1A
 
 影響を受けたサービス一覧には AWS IAM Identity Center も含まれ、障害の対応に巻き込まれ AWS マネジメントコンソールにログインができなくなったご担当者様方には心中お察しいたします。
 
