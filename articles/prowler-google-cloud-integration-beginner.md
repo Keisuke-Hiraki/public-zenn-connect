@@ -191,7 +191,7 @@ IAM > サービスアカウントを選択します。
 まだ gcloud CLI の認証が完了していない場合は以下を実行します。
 
 ```bash
-gcloud auth application-default
+gcloud auth application-default login
 ```
 
 認証が出来たら、サービスアカウントへのなりすまし設定をします。
