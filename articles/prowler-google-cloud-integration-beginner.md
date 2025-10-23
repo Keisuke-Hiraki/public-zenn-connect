@@ -2,7 +2,7 @@
 title: "Google Cloud 初心者が Prowler と連携してセキュリティアセスメントを実施してみた"
 emoji: "✅"
 type: "tech"
-topics: ["googlecloud", "prowler"]
+topics: ["googlecloud", "prowler", "#zennfes2025infra"]
 published: true
 published_at: 2025-10-23 07:00
 publication_name: cscloud_blog
