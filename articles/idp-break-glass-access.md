@@ -2,7 +2,7 @@
 title: "AWS の IdP 障害に備えて Break-Glass Access (緊急時アクセス) の手順を用意しよう"
 emoji: "🚨"
 type: "tech"
-topics: ["aws", "iamidentitycenter", "organizations"]
+topics: ["aws", "iamidentitycenter", "organizations", "#zennfes2025infra"]
 published: true
 published_at: 2025-10-21 07:00
 publication_name: cscloud_blog
