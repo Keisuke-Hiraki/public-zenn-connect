@@ -94,7 +94,7 @@ https://docs.cloud.google.com/iam/docs/service-account-impersonation?hl=ja
 
 ではサービスアカウントを作っていきたいと思います。
 
-まず、サービスアカウンを作成したいプロジェクトへ遷移します。
+まず、サービスアカウントを作成したいプロジェクトへ遷移します。
 今回は SammplePJ というプロジェクトを用意しました。
 
 ![](/images/keisuke-poc2025-10-23-01-05-42.png)
