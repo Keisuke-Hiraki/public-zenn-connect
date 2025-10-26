@@ -8,7 +8,7 @@ published_at: 2025-10-23 07:00
 publication_name: cscloud_blog
 ---
 
-こんにちは、CSC の平木です！
+こんにちは、CSC で [CloudFastner](https://cloud-fastener.com/) というプロダクトで TAM をやっています平木です！
 
 普段は AWS のクラウドセキュリティを取り扱うことが多いですが、
 今回 Google Cloud 環境のセキュリティアセスメントを Prowler を活用して実施する機会があったため、備忘録も兼ねて執筆したいと思います。
