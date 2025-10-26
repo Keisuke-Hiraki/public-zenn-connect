@@ -8,7 +8,7 @@ published_at: 2025-10-21 07:00
 publication_name: cscloud_blog
 ---
 
-こんにちは、CSC で [CloudFastner](https://cloud-fastener.com/) というプロダクトで TAM をやっています平木です！
+こんにちは、CSC の [CloudFastner](https://cloud-fastener.com/) というプロダクトで TAM をやっています平木です！
 
 昨日（2025/10/20）16 時頃 (JST) 、us-east-1 の複数のサービスにてエラー率が上昇する大規模障害が発生しました。
 
