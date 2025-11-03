@@ -12,7 +12,7 @@ publication_name: cscloud_blog
 
 先日、Windows サーバにおいて Amazon GuardDuty で検知した [Trojan:EC2/DGADomainRequest.B](https://docs.aws.amazon.com/ja_jp/guardduty/latest/ug/guardduty_finding-types-ec2.html#trojan-ec2-dgadomainrequestb) を調査しするという機会がありました。
 
-するととある事象のみ合わせによって誤検知と疑われたため、今回はその詳細について見ていきます。
+するととある事象の組み合わせによって誤検知と疑われたため、今回はその詳細について見ていきます。
 
 ## 早速結論
 
@@ -38,13 +38,13 @@ EC2 でホスティングされた Active Directory のドメインコントロ�
 
 対象のアカウント全体で GuardDuty を有効化しており、EC2 マルウェアプロテクションも有効化していました。
 
-![](../images/windows-dga-active-directory_2025-11-03-23-17-15.png)
+![](/images/windows-dga-active-directory_2025-11-03-23-17-15.png)
 
 ## 事象
 
 GuardDuty の運用する中である日、GuardDuty から Severity が High のものを検知したので確認すると今回のきっかけとなる `Trojan:EC2/DGADomainRequest.B` でした。
 
-![](../images/windows-dga-active-directory_2025-11-03-23-17-26.png)
+![](/images/windows-dga-active-directory_2025-11-03-23-17-26.png)
 *画像はイメージです*
 
 ::: details JSON での結果を見たい人はこちらを展開して確認してください
@@ -338,7 +338,7 @@ DGA は、大量のドメイン名を定期的に生成してコマンドアン�
 
 1 日に数千数万といった「ランダム文字列+TLD」のような存在しないドメインを生成しその中に C2 サーバーと通信できる存在するドメインを紛れ込ませることで、セキュリティシステムによる検知を回避しやすくします。
 
-![](../images/windows-dga-active-directory_2025-11-03-23-25-43.png)
+![](/images/windows-dga-active-directory_2025-11-03-23-25-43.png)
 *引用： [ドメイン生成アルゴリズムとは| Akamai](https://www.akamai.com/ja/glossary/what-are-dgas)*
 
 DGA は、マルウェアが感染したデバイスから C&C サーバーへの接続を確立するために使用されるため対処が必要となります。
@@ -410,7 +410,7 @@ EC2 における Windows AMI にはデフォルトで EC2 インスタンスの�
 
 画面ではこんな感じに見えるようです。
 
-![](../images/windows-dga-active-directory_2025-11-04-00-07-55.png)
+![](/images/windows-dga-active-directory_2025-11-04-00-07-55.png)
 *引用： https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ec2launch-v2-settings.html*
 
 この Windows 起動エージェントの DNS サフィックスについて重要なポイントとして「ドメイン名の継承」というものを知っておく必要がありました。
@@ -445,7 +445,7 @@ https://learn.microsoft.com/ja-jp/troubleshoot/windows-client/networking/dns-req
 
 整理すると以下のような感じです。
 
-![](../images/windows-dga-active-directory_2025-11-04-00-41-07.png)
+![](/images/windows-dga-active-directory_2025-11-04-00-41-07.png)
 
 ## 対処
 
