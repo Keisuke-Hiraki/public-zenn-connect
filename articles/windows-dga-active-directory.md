@@ -3,7 +3,7 @@ title: "Windows サーバで Trojan:EC2/DGADomainRequest.B を検知したら誤
 emoji: "🪟"
 type: "tech"
 topics: ["aws", "windows", "guardduty"]
-published: false
+published: true
 published_at: 2025-11-04 07:00
 publication_name: cscloud_blog
 ---
