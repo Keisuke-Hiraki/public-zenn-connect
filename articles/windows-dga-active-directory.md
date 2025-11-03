@@ -12,7 +12,7 @@ publication_name: cscloud_blog
 
 先日、Windows サーバにおいて Amazon GuardDuty で検知した [Trojan:EC2/DGADomainRequest.B](https://docs.aws.amazon.com/ja_jp/guardduty/latest/ug/guardduty_finding-types-ec2.html#trojan-ec2-dgadomainrequestb) を調査しするという機会がありました。
 
-するととある事象の組み合わせによって誤検知と疑われたため、今回はその詳細について見ていきます。
+すると、とある事象の組み合わせによって誤検知と疑われたため、今回はその詳細について見ていきます。
 
 ## 早速結論
 
@@ -49,7 +49,7 @@ GuardDuty の運用する中である日、GuardDuty から Severity が High �
 
 ::: details JSON での結果を見たい人はこちらを展開して確認してください
 
-ASFF は以下です。
+ASFF のサンプルは以下です。
 
 ```json:ASFF
 {
@@ -150,7 +150,7 @@ ASFF は以下です。
 }
 ```
 
-OCSF は以下です。
+OCSF のサンプルは以下です。
 
 ```json:OCSF
 {
@@ -320,7 +320,7 @@ OCSF は以下です。
 
 :::
 
-この検知内容を見ると、EC2 インスタンス `i-1234567890abcdef0` が `dglvrrerxokcxc.co.jp` というドメイン名をクエリしていることがわかります。
+この検知内容を見ると、EC2 インスタンス `i-1234567890abcdef0` が `dglvrrerxokcxc.co.jp` というドメイン名をクエリした結果、`Trojan:EC2/DGADomainRequest.B` が検知していることがわかります。
 
 ### Trojan:EC2/DGADomainRequest.B とは
 
@@ -522,7 +522,6 @@ https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/launch-agents-set-dns.
 - [EC2Launch v2 のバージョン履歴 - Amazon Elastic Compute Cloud](https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ec2launchv2-versions.html)
 - [EC2Launch v2 の最新バージョンのインストール - Amazon Elastic Compute Cloud](https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ec2launch-v2-install.html)
 - [GuardDuty EC2 の検出結果タイプ - Amazon GuardDuty](https://docs.aws.amazon.com/ja_jp/guardduty/latest/ug/guardduty_finding-types-ec2.html#trojan-ec2-dgadomainrequestb)
-- 
 
 ## おわりに
 
