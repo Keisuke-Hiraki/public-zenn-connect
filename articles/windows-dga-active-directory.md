@@ -10,7 +10,7 @@ publication_name: cscloud_blog
 
 こんにちは、CSC の [CloudFastener](https://cloud-fastener.com/) というプロダクトで TAM のポジションで働いている平木です！
 
-先日、Windows サーバにおいて Amazon GuardDuty で検知した [Trojan:EC2/DGADomainRequest.B](https://docs.aws.amazon.com/ja_jp/guardduty/latest/ug/guardduty_finding-types-ec2.html#trojan-ec2-dgadomainrequestb) を調査しするという機会がありました。
+先日、Windows サーバにおいて Amazon GuardDuty で検知した [Trojan:EC2/DGADomainRequest.B](https://docs.aws.amazon.com/ja_jp/guardduty/latest/ug/guardduty_finding-types-ec2.html#trojan-ec2-dgadomainrequestb) を調査するという機会がありました。
 
 すると、とある事象の組み合わせによって誤検知と疑われたため、今回はその詳細について見ていきます。
 
