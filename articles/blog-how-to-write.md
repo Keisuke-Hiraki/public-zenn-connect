@@ -1,6 +1,6 @@
 ---
 title: "初めてブログを書く方がチャレンジするにあたって"
-emoji: "🚨"
+emoji: "📖"
 type: "idea"
 topics: ["blog"]
 published: true
