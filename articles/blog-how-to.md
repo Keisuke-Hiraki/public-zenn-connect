@@ -4,7 +4,6 @@ emoji: "🚨"
 type: "idea"
 topics: ["blog"]
 published: true
-published_at: 2025-11-07 07:00
 publication_name: cscloud_blog
 ---
 
