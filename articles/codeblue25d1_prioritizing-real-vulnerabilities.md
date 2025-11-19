@@ -28,7 +28,7 @@ https://codeblue.jp/program/time-table/day1-t2-opentalks-07/
 
 本セッションは、適切な脆弱性の対応優先度の決定方法について TALON SCORE フレームワークと紐づけて解説する内容でした。
 
-![](image/codeblue25d1_prioritizing-real-vulnerabilities_2025-11-19-02-22-57.png)
+![](/images/codeblue25d1_prioritizing-real-vulnerabilities_2025-11-19-02-22-57.png)
 *ヤン・ジョンヒョン氏の講演スライドより*
 
 すべての脆弱性が同等ではない理由について、 2 つの例題から考えていきます。
