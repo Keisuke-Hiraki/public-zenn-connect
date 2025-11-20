@@ -19,8 +19,8 @@ https://codeblue.jp/
 - Category: Bluebox
 - Location: Track 3(Room 3)
 
-Windows イベントログは DFIR において重要ですが、デフォルト設定ではログサイズの制限や不十分なポリシーにより、脅威検出の死角が生じることがあります。
-本セッションでは、Windows イベントログの監査設定を評価・改善するための 2 つのオープンソースツール「WELA」と「EventLog-Baseline-Guide」を紹介します。
+Windows イベントログは DFIR において重要ですが、デフォルト設定ではログサイズの制限や不十分なポリシーにより、脅威検出の死角が生じることがあります。  
+本セッションでは、Windows イベントログの監査設定を評価・改善するための 2 つのオープンソースツール「WELA」と「EventLog-Baseline-Guide」を紹介します。  
 これらのツールを活用することで、ログの可視性ギャップを解消し、データに基づいた効果的な DFIR 体制の強化に貢献します。
 
 https://codeblue.jp/program/time-table/day2-t3-02/
