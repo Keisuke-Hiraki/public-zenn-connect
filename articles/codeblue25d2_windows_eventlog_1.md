@@ -78,11 +78,52 @@ System 配下は固定で共通のデータが入るが、 \<EventData\> また�
 
 下記はイベントの見本でイベントビューアーで見たものです。
 
-![](/images/codeblue25d2_windows_eventlog_2025-11-19-23-59-31.png)
-*高橋氏の講演スライドより*
+```xml
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" />
+    <EventID>4625</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>12544</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8010000000000000</Keywords>
+    <TimeCreated SystemTime="2021-06-18T14:44:08.454527200Z" />
+    <EventRecordID>2650</EventRecordID>
+    <Correlation ActivityID="{1F064E34-5A91-0001-DE4E-061F915AD701}" />
+    <Execution ProcessID="596" ThreadID="648" />
+    <Channel>Security</Channel>
+    <Computer>pc-dk.hinokabegakure-no-sato.local</Computer>
+    <Security />
+  </System>
+```
 
-![](/images/codeblue25d2_windows_eventlog_2025-11-19-23-59-42.png)
-*高橋氏の講演スライドより*
+```xml
+<EventData>
+    <Data Name="SubjectUserSid">S-1-5-21-2227440290-791489279-1031732972-1117</Data>
+    <Data Name="SubjectUserName">d-kato</Data>
+    <Data Name="SubjectDomainName">hns</Data>
+    <Data Name="SubjectLogonId">0x21ec05</Data>
+    <Data Name="TargetUserSid">S-1-0-0</Data>
+    <Data Name="TargetUserName">administrator</Data>
+    <Data Name="TargetDomainName">PC-DK</Data>
+    <Data Name="Status">0xc000006d</Data>
+    <Data Name="FailureReason">%%2313</Data>
+    <Data Name="SubStatus">0xc000006a</Data>
+    <Data Name="LogonType">2</Data>
+    <Data Name="LogonProcessName">seclogo</Data>
+    <Data Name="AuthenticationPackageName">Negotiate</Data>
+    <Data Name="WorkstationName">PC-DK</Data>
+    <Data Name="TransmittedServices">-</Data>
+    <Data Name="LmPackageName">-</Data>
+    <Data Name="KeyLength">0</Data>
+    <Data Name="ProcessId">0x3e8</Data>
+    <Data Name="ProcessName">C:\Windows\System32\svchost.exe</Data>
+    <Data Name="IpAddress">::1</Data>
+    <Data Name="IpPort">0</Data>
+  </EventData>
+</Event>
+```
 
 キーバリューペアでフィールド名も変わってくる、基本は人が読めない 16 進数や%%2313 コードが使用されているとのことです。
 
@@ -151,9 +192,6 @@ Sysmon を使うことでさらにカバー範囲を広げることができま�
 
 Sigma 検知ルールにおいてデフォルト設定だとほとんどの項目においてログが不足している状態になります。
 
-![](/images/codeblue25d2_windows_eventlog_2025-11-20-00-50-44.png)
-*高橋氏の講演スライドより*
-
 ちなみに、講演当日のニュースで Sysmon が Windows ネイティブ機能で標準実装されたため運用オーバーヘッドが低減しました。
 
 https://techcommunity.microsoft.com/blog/windows-itpro-blog/native-sysmon-functionality-coming-to-windows/4468112
@@ -201,16 +239,13 @@ Windows イベントログ設定ガイドとして以下 3 つが挙げられま
 
 https://github.com/Yamato-Security/WELA
 
-MITRE ATT&CK の可視化も可能です。
+WELA では、 MITRE ATT&CK の可視化も可能です。
 
-![](/images/codeblue25d2_windows_eventlog_2025-11-20-01-48-05.png)
-*高橋氏の講演スライドより*
-
-`EventLog-Baseline-Guide` というツールも紹介されます。
+`EventLog-Baseline-Guide` というツールも紹介されていました。
 
 https://github.com/Yamato-Security/EventLog-Baseline-Guide
 
-おまけで Hayabusa というログメトリクスに関するログの保持期間をウォッチできるツールをご紹介いただきました。
+またおまけで Hayabusa というログメトリクスに関するログの保持期間をウォッチできるツールをご紹介いただきました。
 
 最後のまとめとなりますが、  
 イベントログデフォルト設定には課題がありログサイズや監査設定には不十分です。  
