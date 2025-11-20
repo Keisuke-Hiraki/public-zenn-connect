@@ -17,7 +17,7 @@ publication_name: cscloud_blog
 
 https://aws.amazon.com/jp/about-aws/whats-new/2025/11/amazon-inspector-organization-wide-management-aws-organizations-policies/
 
-![](../images/organitions-policy-for-inspector_2025-11-21-05-46-51.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-05-46-51.png)
 
 ## 3 行まとめ
 
@@ -193,31 +193,31 @@ Inspector ポリシーの有効化とポリシー作成の手順について記�
 
 まず Organizations からポリシーをナビゲーションペインで選択し、「Inspector ポリシー」を押します。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-31-26.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-31-26.png)
 
 続いて、「Inspector ポリシーを有効にする」を押します。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-32-17.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-32-17.png)
 
 「有効になりました」と表記されたら完了です。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-33-22.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-33-22.png)
 
 ポリシーを作成したい場合は、「ポリシーを作成」を押します。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-34-10.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-34-10.png)
 
 上部では任意のポリシー名、説明、タグを指定します。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-34-41.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-34-41.png)
 
 下部で任意のポリシードキュメントを反映させ、「ポリシーを作成」を押したら完了です。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-35-20.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-35-20.png)
 
 作成したポリシーはターゲットのタブから「アタッチ」を押し、任意の OU を選択するとアタッチできます。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-36-44.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-36-44.png)
 
 ## もしうまくいかない場合
 
@@ -225,11 +225,11 @@ Inspector ポリシーの有効化とポリシー作成の手順について記�
 
 Inspector のコンソールを見ると黄色いバーが表示されるので「Attach Statement」を押し、
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-39-11.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-39-11.png)
 
 チェックを入れ、「Attach statement」を押し状況が改善するか確認してみてください。
 
-![](../images/organitions-policy-for-inspector_2025-11-21-06-40-09.png)
+![](/images/organitions-policy-for-inspector_2025-11-21-06-40-09.png)
 
 ## まとめ
 
