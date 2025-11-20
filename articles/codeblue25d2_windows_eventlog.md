@@ -50,8 +50,7 @@ https://codeblue.jp/program/time-table/day2-t3-02/
 
 そんな設定を最大限に生かすためにどのように設定改善できるかを説明していただいています。
 
-![](/images/codeblue25d2_windows_eventlog_2025-11-19-23-41-22.png)
-*高橋氏の講演スライドより*
+https://www.linkedin.com/posts/activity-7281650669302763520-n41X?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEIVOnIBkxj8KGO19EX5HAvUfnxwUlQvSUk
 
 まずはイベントログの基礎知識です。
 
