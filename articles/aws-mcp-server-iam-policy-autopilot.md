@@ -1,5 +1,5 @@
 ---
-title: "新機能のAWS MCP ServerとIAM Policy Autopilotを使用して高速でリソース検索とIAMポリシーの分析をしてみた"
+title: "新機能のAWS MCP ServerとIAM Policy Autopilotを使用して高速でリソース構築とIAMポリシーの分析をしてみた"
 emoji: "🔍"
 type: "tech"
 topics: ["aws", "mcp", "iam"]
