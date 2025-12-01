@@ -107,7 +107,7 @@ kiro-cli mcp add \
 今回は、既存の `keisuke-poc-vpc` というリソースを調査させ、EC2 と SNS トピックを作成する CloudFormation テンプレートを生成してもらいました。  
 また、S3 のファイルの中身を処理し SNS で通知する Lambda の Python コードから必要な IAM ポリシーを提案してもらう部分をやってみました。
 
-![](/images/aws-mcp-server-iam-policy-autopilot_2025-12-01-20-42-36.png)
+![](/images/aws-mcp-server-iam-policy-autopilot_2025-12-01-21-30-26.png)
 
 今回は、Kiro CLI を使用し 2 つの MCP を事前に設定しておいたので以下のような画面でスタートします。  
 `/mcp` から 2 つの MCP が設定されていることが分かります。
