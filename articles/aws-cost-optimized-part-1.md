@@ -60,7 +60,7 @@ AWS はこれまでに 100 回以上の値下げを実施してきましたが�
 コスト最適化の全体像を掴むために、AWS は**Cloud Financial Management (CFM)** というフレームワークを提唱しています。  
 これは、コストの「可視化」「最適化」「計画」「FinOps の実践」という 4 つのサイクルを回すことで、組織的にコスト管理を改善していく考え方です。
 
-![](../images/aws-cost-optimized-part-1_2025-12-01-23-28-41.png)
+![](/images/aws-cost-optimized-part-1_2025-12-01-23-28-41.png)
 *(出典: AWS Well-Architected Framework)*
 
 とはいえ、いきなり全部をやるのは大変です。
@@ -74,17 +74,17 @@ AWS はこれまでに 100 回以上の値下げを実施してきましたが�
 #### ① AWS Cost Explorer
 AWS の利用コストと使用状況をグラフで分かりやすく表示してくれるツールです。サービス別、タグ別などで費用をドリルダウンできるため、「何に」「どれくらい」使っているのかを一目で把握できます。将来のコスト予測機能も便利です。
 
-![](../images/aws-cost-optimized-part-1_2025-12-01-23-29-56.png)
+![](/images/aws-cost-optimized-part-1_2025-12-01-23-29-56.png)
 
 #### ② AWS Budgets
 設定した予算（コスト、使用量など）を超えそうになると、アラートで通知してくれるサービスです。「今月は〇〇ドルまで」といった予算を設定しておけば、使いすぎを未然に防ぐことができます。
 
-![](../images/aws-cost-optimized-part-1_2025-12-01-23-30-35.png)
+![](/images/aws-cost-optimized-part-1_2025-12-01-23-30-35.png)
 
 #### ③ AWS Cost Anomaly Detection
 機械学習を用いて、普段の利用パターンから逸脱した「異常なコスト増」を自動で検出してくれる機能です。予期せぬ設定ミスや不正利用による高額請求を早期に発見するのに役立ちます。
 
-![](../images/aws-cost-optimized-part-1_2025-12-01-23-31-08.png)
+![](/images/aws-cost-optimized-part-1_2025-12-01-23-31-08.png)
 
 ### Step 2: すぐに効果が出るクイックウィン最適化
 
