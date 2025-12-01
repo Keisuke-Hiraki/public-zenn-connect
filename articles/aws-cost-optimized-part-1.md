@@ -3,7 +3,7 @@ title: "社内向け第一回 AWS コスト最適化勉強会の資料を公開�
 emoji: "💰"
 type: "idea"
 topics: ["aws", "finops", "costoptimization"]
-published: true
+published: false
 ---
 
 こんにちは、CSC の平木です！
