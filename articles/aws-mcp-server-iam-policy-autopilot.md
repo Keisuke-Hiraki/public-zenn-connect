@@ -144,10 +144,10 @@ Description: EC2 instance with SNS notification capabilities
 Parameters:
   VpcId:
     Type: String
-    Default: vpc-0f993a9524be81212
+    Default: vpc-1234567890abcdefg
   SubnetId:
     Type: String
-    Default: subnet-043c03fd92df643ba
+    Default: subnet-1234567890abcdefg
   EmailAddress:
     Type: String
     Description: Email address for SNS notifications
