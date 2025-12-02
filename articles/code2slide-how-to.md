@@ -38,7 +38,7 @@ https://blog.google/products/gemini/prompting-tips-nano-banana-pro/
 - スタイル： どのような美的感覚のビジュアルかの情報
 - 編集手段： 既存の画像を修正したい場合は修正したいものの具体的な変更内容
 
-![](/images/code2slide-how-to_2025-12-02-09-36-04.png)
+![](/images/code2slide-how-to_2025-12-02-11-00-27.png)
 
 ではこれをスライド生成に置き換えて考えてみると以下のようになるのではないかと考えました。
 
@@ -49,7 +49,7 @@ https://blog.google/products/gemini/prompting-tips-nano-banana-pro/
 - スタイル： スライドの配色やフォントやサイズ
 - 編集手段： 既存のスライドを修正したい場合は修正したいものの具体的な変更内容
 
-![](/images/code2slide-how-to_2025-12-02-09-36-55.png)
+![](/images/code2slide-how-to_2025-12-02-11-00-57.png)
 
 ## やってみた
 
