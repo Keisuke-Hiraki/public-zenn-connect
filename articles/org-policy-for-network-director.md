@@ -23,7 +23,7 @@ https://www.wafcharm.com/jp/blog/new-aws-feature-network-security-director-previ
 
 https://docs.aws.amazon.com/ja_jp/waf/latest/developerguide/nsd-what-it-is.html
 
-![](../images/org-policy-for-network-director_2025-12-15-23-19-44.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-19-44.png)
 
 :::message
 2025/12/16 現時点では、Organizations からの作成は、
@@ -145,11 +145,11 @@ Organizations 全体で全てのリージョンで Network Security Director を
 
 Organizations 管理アカウントにログインし、AWS Shield から Network Security Director の「Get Started」に移動します。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-38-37.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-38-37.png)
 
 遷移するとこの画面に移動し、いくつか設定項目が表示されます。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-39-36.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-39-36.png)
 
 「Set a delegated administrator」は委任管理アカウントの指定のため、Recommended の選択肢のアカウントまたは明示的に任意のアカウントを指定してください。
 
@@ -157,7 +157,7 @@ Organizations 管理アカウントにログインし、AWS Shield から Networ
 
 ポリシーの更新を承認するチェックボックスにチェックを入れ、「Complete get started」を押してください。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-40-20.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-40-20.png)
 
 ### ポリシーの有効化（失敗例）
 
@@ -165,29 +165,29 @@ Organizations 管理アカウントにログインし、AWS Shield から Networ
 
 まず Organizations からポリシーをナビゲーションペインで選択し、「ネットワークセキュリティディレクターポリシー」を押します。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-34-59.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-34-59.png)
 
 続いて、「ネットワークセキュリティディレクターポリシーを有効化」を押します。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-35-40.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-35-40.png)
 
 「有効になりました」と表記されたら完了です。
 
 ポリシーを作成したい場合は、「ポリシーを作成」を押します。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-46-54.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-46-54.png)
 
 上部では任意のポリシー名、説明、タグを指定します。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-47-36.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-47-36.png)
 
 下部で任意のポリシードキュメントを反映させ、「ポリシーを作成」を押したら完了です。
 
-![](../images/org-policy-for-network-director_2025-12-15-23-48-36.png)
+![](/images/org-policy-for-network-director_2025-12-15-23-48-36.png)
 
 と思いきや、`The provided policy document does not meet the requirements of the specified policy type.`というエラーが出てしまい先に進めませんでした。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-10-51.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-10-51.png)
 
 現時点では上記の手順でポリシーを有効化できなかったため、AWS CLI からも試してみましたが同様に正常に完了しませんでした。
 
@@ -198,11 +198,11 @@ Organizations 管理アカウントにログインし、AWS Shield から Networ
 
 Network Security Director の委任管理アカウントへ切り替え、Network Security Director の画面に遷移し、「Enable」を押します。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-15-27.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-15-27.png)
 
 まずポリシー名や Description の入力を問われるため、任意の値を指定します。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-16-16.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-16-16.png)
 
 続いて、2 種類の設定項目があります。
 
@@ -214,11 +214,11 @@ Network Security Director の委任管理アカウントへ切り替え、Networ
 
 最後「Enable network security director」を押せば作成完了です。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-21-33.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-21-33.png)
 
 作成が完了するとポリシー一覧が確認できます。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-23-12.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-23-12.png)
 
 ### ポリシーの確認と有効化の確認
 
@@ -227,17 +227,17 @@ Network Security Director で作成したポリシーは Organizations ポリシ
 どうやらポリシータイプ、ネットワークセキュリティディレクターポリシー (カスタマーマネージド) として管理されているようです。
 ただこのポリシーをいじると同様のエラーが出るため、基本的には Network Security Director のコンソールで作成・変更が必要なようです。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-26-03.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-26-03.png)
 
-![](../images/org-policy-for-network-director_2025-12-16-00-33-44.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-33-44.png)
 
 どのアカウントがどのリージョンで有効化されているかは、Network Security Director の Dashboard の Accounts という項目で確認できます。
 
 リージョンを切り替えることで確認したいことを変更できます。
 
-![](../images/org-policy-for-network-director_2025-12-16-00-31-06.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-31-06.png)
 
-![](../images/org-policy-for-network-director_2025-12-16-00-31-43.png)
+![](/images/org-policy-for-network-director_2025-12-16-00-31-43.png)
 
 ## まとめ
 
