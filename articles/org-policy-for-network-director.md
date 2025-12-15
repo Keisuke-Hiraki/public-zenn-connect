@@ -2,7 +2,7 @@
 title: "新しく 13 番目の Organizations ポリシーになるネットワークセキュリティディレクターポリシーが追加されました！"
 emoji: "🔍"
 type: "tech"
-topics: ["aws", "networksecuritydirector", "organizations", "security"]
+topics: ["aws", "organizations", "security"]
 published: true
 published_at: 2025-12-16 07:00
 publication_name: cscloud_blog
