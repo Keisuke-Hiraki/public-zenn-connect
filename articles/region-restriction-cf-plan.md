@@ -172,7 +172,7 @@ Control Tower のリージョン制限を使用すると明示的に指定しな
 
 > User: XXXXX is not authorized to perform: pricingplanmanager:CreateSubscription with an explicit deny in a service control policy
 
-![](../images/region-restriction-cf-plan_2025-12-24-18-04-00.png)
+![](/images/region-restriction-cf-plan_2025-12-24-18-04-00.png)
 
 ただよく見てみるとディストリビューション自体は作成できていたので、謎が深まりました。
 
@@ -207,7 +207,7 @@ https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/security-iam-
 変更方法としては、
 Control Tower の場合は、コントロールの更新時の NotActions の追加という項目に、当該 API 全てか、`pricingplanmanager:*` を追加します。
 
-![](../images/region-restriction-cf-plan_2025-12-24-18-47-36.png)
+![](/images/region-restriction-cf-plan_2025-12-24-18-47-36.png)
 
 自前で SCP を立てている場合は、NotAction のセクションに当該 API 全てか、`pricingplanmanager:*` を追加してください。
 
