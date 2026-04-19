@@ -1,0 +1,4 @@
+/* Gotoダイアログが非アクティブ（input disabled）のとき、オートコンプリートリストを非表示 */
+#slidev-goto-dialog:has(input:disabled) .autocomplete-list {
+  display: none !important;
+}
