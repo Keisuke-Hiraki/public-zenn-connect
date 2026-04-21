@@ -127,7 +127,7 @@ DevOps Agent が調査に活用できるよう、以下のログソースを Clo
 
 DNS ルックアップ系のテストはすべて正常に名前解決され、GuardDuty Findings も生成されました。EICAR テストファイルのダウンロードは成功したものの、GuardDuty Malware Protection による Finding は生成されませんでした。EBS スキャンが自動トリガーされる条件を満たさなかった可能性があります。
 
-![](../images/SCR-20260422-ffmq.png)
+![](/images/SCR-20260422-ffmq.png)
 
 ### ステップ 2: DevOps Agent が自動調査を開始する
 
@@ -140,7 +140,7 @@ Finding 生成から調査完了までの流れは以下の通りです。
 | T+8 分 | DevOps Agent が調査を自動開始 | DevOps Agent |
 | T+数十分 | VPC フローログ分析・IP 評価完了、ジャーナル生成 | DevOps Agent |
 
-![](../images/SCR-20260422-fgtl.png)
+![](/images/SCR-20260422-fgtl.png)
 
 ### ステップ 3: Triage Agent による自動分類
 
@@ -157,7 +157,7 @@ DevOps Agent の **Triage Agent** が、受信した複数の GuardDuty Findings
 │       └── 理由: "同一 EC2 インスタンス、同一アカウント、同一リージョン。"
 ```
 
-![](../images/SCR-20260422-fiom.jpeg)
+![](/images/SCR-20260422-fiom.jpeg)
 
 **同一インスタンスに起因する複数の Findings を自動的に LINKED ステータスにまとめてくれる**点が重要です。1 つのインシデントに対して複数のアラートが発生しても、プライマリタスクに集約されることでノイズが大幅に削減されます。LINKED の理由も日本語で明確に記述されており、なぜ関連付けられたのかが一目で分かります。
 
@@ -173,7 +173,7 @@ DevOps Agent は調査の過程を**ジャーナル（Investigation Journal）**
 | EC2 インスタンス（3.5.x.x） | 14 MB 受信 | 攻撃者制御下の EC2 による C&C ネットワーク |
 | EC2/AWS サービス（52.195.x.x） | 236 KB 送信 | 設定ファイルやコマンド取得の可能性 |
 
-![](../images/SCR-20260422-fkad.png)
+![](/images/SCR-20260422-fkad.png)
 
 検出された 14 個の外部 IP アドレスに加え、以下の不審な通信パターンも自動検出しました。
 
@@ -189,7 +189,7 @@ DevOps Agent は調査の過程を**ジャーナル（Investigation Journal）**
 | 実行 | マイニングプールへの DNS クエリ | GuardDuty Finding（Severity 8） |
 | 収益化 | ビットコインマイニング活動開始 | 複数のマイニングプールへの通信 |
 
-![](../images/SCR-20260422-fldt.png)
+![](/images/SCR-20260422-fldt.png)
 
 :::message
 今回はテスト目的で DNS ルックアップを行っただけですが、DevOps Agent は VPC フローログの通信パターンから「S3 バケット経由のマルウェア配信」や「C&C ネットワーク構築」といった攻撃シナリオまで推定しています。実際の攻撃ではないため過検知ではありますが、**利用可能な情報を最大限活用して調査を行う姿勢**は印象的でした。
@@ -203,7 +203,7 @@ DevOps Agent は調査の過程を**ジャーナル（Investigation Journal）**
 - 🔒 侵害されたインスタンスを隔離し、フォレンジック分析を実施
 - 📋 AWS Abuse Team に攻撃者制御下の EC2 インスタンス IP を報告
 
-![](../images/SCR-20260422-flum.png)
+![](/images/SCR-20260422-flum.png)
 
 ユーザーによる検証ということもバレていそうですね笑
 
