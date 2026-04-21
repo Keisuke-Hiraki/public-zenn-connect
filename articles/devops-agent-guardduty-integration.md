@@ -157,7 +157,7 @@ DevOps Agent の **Triage Agent** が、受信した複数の GuardDuty Findings
 │       └── 理由: "同一 EC2 インスタンス、同一アカウント、同一リージョン。"
 ```
 
-![](/images/SCR-20260422-fiom.jpeg)
+![](/images/SCR-20260422-fxbq.jpeg)
 
 **同一インスタンスに起因する複数の Findings を自動的に LINKED ステータスにまとめてくれる**点が重要です。1 つのインシデントに対して複数のアラートが発生しても、プライマリタスクに集約されることでノイズが大幅に削減されます。LINKED の理由も日本語で明確に記述されており、なぜ関連付けられたのかが一目で分かります。
 
@@ -203,7 +203,7 @@ DevOps Agent は調査の過程を**ジャーナル（Investigation Journal）**
 - 🔒 侵害されたインスタンスを隔離し、フォレンジック分析を実施
 - 📋 AWS Abuse Team に攻撃者制御下の EC2 インスタンス IP を報告
 
-![](/images/SCR-20260422-flum.png)
+![](/images/SCR-20260422-fwko.png)
 
 ユーザーによる検証ということもバレていそうですね笑
 
