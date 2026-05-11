@@ -3,7 +3,7 @@ title: "KMSが最終使用状況を追跡できるようになったので新し
 emoji: "🔑"
 type: "tech"
 topics: ["aws", "kms"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
