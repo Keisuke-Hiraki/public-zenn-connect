@@ -796,7 +796,7 @@ Security Hub CSPM では ASFF（AWS Security Finding Format）を使用してい
 
 ### AWS サービス間の OCSF 活用の違い
 
-AWS では Security Hub だけでなく、**Amazon Security Lake** では OCSF　を活用し、最近 **Amazon CloudWatch Logs** も OCSF に対応しました。  
+AWS では Security Hub だけでなく、**Amazon Security Lake** では OCSF を活用し、最近 **Amazon CloudWatch Logs** も OCSF に対応しました。  
 ただし、用途・スキーマバージョン・扱うデータの種類が異なります。
 
 | 比較軸 | Security Hub | Amazon Security Lake | Amazon CloudWatch Logs |
