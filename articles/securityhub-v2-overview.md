@@ -174,6 +174,8 @@ GuardDuty・Inspector・Security Hub CSPM・Macie などの各サービスから
 - `AWS::DynamoDB::Table`
 - `AWS::IAM::User`
 
+[Security Hub での露出の検出結果でサポートされているリソースタイプ - AWS Security Hub](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/exposure-findings-supported-resources.html)
+
 **トレイトの種類**
 
 露出検出結果は以下の 5 種類のトレイトを組み合わせて評価されます：
@@ -240,6 +242,8 @@ graph TD
 :::message
 露出検出結果の修復ガイダンスには、具体的な手順と参考リンクが含まれます。ただし他の AWS リソースの追加確認が必要な場合もあるため、修復前に詳細を確認してください。
 :::
+
+[Security Hub でサポートされている特性タイプ - AWS Security Hub](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/exposure-findings-supported-traits.html)
 
 **具体例：EC2 インスタンスの露出検出結果**
 
@@ -608,6 +612,8 @@ Security Hub の利用状況を確認できます。
 
 ## 料金体系
 
+[統合クラウドセキュリティソリューション – AWS Security Hub の料金 – Amazon Web Services](https://aws.amazon.com/jp/security-hub/pricing/)
+
 ### 30 日間の無料トライアル
 
 Security Hub は **全アカウント・全リージョンで 30 日間無料**でお試しいただけます。Usage 画面でトライアル残日数を確認できます。
@@ -679,6 +685,8 @@ OCSF は以下の階層で分類されます：
        └─ イベント（Event）
             └─ 属性（Attribute）
 ```
+
+[Security Hub と Open Cybersecurity Findings 形式 (OCSF) - AWS Security Hub](https://docs.aws.amazon.com/ja_jp/securityhub/latest/userguide/securityhub-ocsf.html)
 
 Security Hub の検出結果は主に **カテゴリ 2（Findings）** に属し、以下のクラスを使用します：
 
