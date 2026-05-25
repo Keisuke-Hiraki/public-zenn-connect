@@ -316,7 +316,7 @@ Inspector が検出した CVE（共通脆弱性識別子）情報に特化した
 
 ![](/images/Screenshot_2026-05-25_at_15-22-19.png)
 
-#### 体制管理 
+#### 体制管理
 
 AWS Config・Security Hub CSPM のセキュリティ標準評価結果をベースに、クラウド設定のセキュリティ体制を管理します。
 
@@ -701,6 +701,10 @@ Security Hub の検出結果は主に **カテゴリ 2（Findings）** に属し
 
 ### 主要フィールド
 
+検出結果のクラスによってフィールド構成が異なります。
+
+:::details Compliance Finding（class_uid: 2003）— 体制管理・CSPM
+
 ```json
 {
   "activity_id": 2,
@@ -717,30 +721,25 @@ Security Hub の検出結果は主に **カテゴリ 2（Findings）** に属し
   "status": "New",
   "time_dt": "2025-05-25T10:00:00Z",
 
-  "metadata": {            // 検出結果のメタ情報
+  "metadata": {
     "product": {
       "name": "Security Hub",
       "vendor_name": "AWS",
       "uid": "arn:aws:securityhub:ap-northeast-1::productv2/aws/securityhub"
     },
     "profiles": ["cloud", "datetime", "aws/cloud_resources"],
-    "extensions": [
-      { "name": "aws", "uid": "998", "version": "1.0.0" }
-    ],
-    "uid": "2ba04fd85e272b8118f9cbbf2ecadcb1531b44df48f6a4610cec95e03de1848c",
+    "extensions": [{ "name": "aws", "uid": "998", "version": "1.0.0" }],
+    "uid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "version": "1.8.0"
   },
 
-  "cloud": {               // クラウド環境情報
-    "account": {
-      "name": "my-account",
-      "uid": "111122223333"
-    },
+  "cloud": {
+    "account": { "name": "my-account", "uid": "111122223333" },
     "provider": "AWS",
     "region": "ap-northeast-1"
   },
 
-  "finding_info": {        // 検出結果の詳細（ASFF の Title/Description に相当）
+  "finding_info": {
     "analytic": {
       "category": "AWS::Config::ConfigRule",
       "name": "securityhub-s3-bucket-public-read-prohibited-xxxxxxxx",
@@ -757,7 +756,7 @@ Security Hub の検出結果は主に **カテゴリ 2（Findings）** に属し
     "uid": "arn:aws:securityhub:ap-northeast-1:111122223333:security-control/S3.1/finding/xxxxxxxx"
   },
 
-  "resources": [           // 影響を受けるリソース
+  "resources": [
     {
       "type": "AWS::S3::Bucket",
       "uid": "my-public-bucket",
@@ -765,32 +764,294 @@ Security Hub の検出結果は主に **カテゴリ 2（Findings）** に属し
       "cloud_partition": "aws",
       "provider": "AWS",
       "region": "ap-northeast-1",
-      "owner": {
-        "account": { "uid": "111122223333" }
-      }
+      "owner": { "account": { "uid": "111122223333" } }
     }
   ],
 
-  "compliance": {          // コンプライアンス情報
+  "compliance": {          // コンプライアンス情報（Compliance Finding 固有）
     "control": "S3.1",
     "standards": ["standards/aws-foundational-security-best-practices/v/1.0.0"],
     "status": "Fail",
     "status_id": 3         // 1=Pass, 3=Fail
   },
 
-  "remediation": {         // 修復ガイダンス
+  "remediation": {
     "desc": "For information on how to correct this issue, consult the AWS Security Hub controls documentation.",
-    "references": [
-      "https://docs.aws.amazon.com/console/securityhub/S3.1/remediation"
-    ]
+    "references": ["https://docs.aws.amazon.com/console/securityhub/S3.1/remediation"]
   },
 
-  "vendor_attributes": {
-    "severity": "High",
-    "severity_id": 4
-  }
+  "vendor_attributes": { "severity": "High", "severity_id": 4 }
 }
 ```
+
+:::
+
+:::details Detection Finding（class_uid: 2004）— 脅威検出（GuardDuty）・露出検出
+
+```json
+{
+  "activity_id": 2,
+  "activity_name": "Update",
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "type_name": "Detection Finding: Update",
+  "type_uid": 200402,
+  "severity_id": 5,
+  "severity": "Critical",
+  "status_id": 1,
+  "status": "New",
+  "time_dt": "2025-05-25T10:00:00Z",
+  "count": 3,              // シグナル数（アタックシーケンス）
+
+  "metadata": {
+    "product": {
+      "name": "GuardDuty",          // 露出検出の場合は "Security Hub Exposure Detection"
+      "vendor_name": "AWS",
+      "uid": "arn:aws:securityhub:ap-northeast-1::productv2/aws/guardduty",
+      "feature": { "name": "Correlation" }
+    },
+    "profiles": ["cloud", "datetime", "aws/cloud_resources"],
+    "extensions": [{ "name": "aws", "uid": "998", "version": "1.0.0" }],
+    "uid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "version": "1.8.0"
+  },
+
+  "cloud": {
+    "account": { "name": "my-account", "uid": "111122223333" },
+    "provider": "AWS",
+    "region": "ap-northeast-1"
+  },
+
+  "evidences": [           // 脅威の証拠（GuardDuty 固有。露出検出には含まれない）
+    { "src_endpoint": { "uid": "malicious-domain.example.com" } }
+  ],
+
+  "finding_info": {
+    "analytic": {
+      "type": "Learning (ML/DL)",   // ルールベースの場合は "Rule"
+      "type_id": 4,
+      "uid": "detector-id-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "title": "Potential EC2 instance group compromise indicated by a sequence of actions.",
+    "desc": "A sequence of actions involving multiple signals indicating a potential compromise.",
+    "types": ["Threats", "AttackSequence:EC2/CompromisedInstanceGroup"],
+    "attacks": [
+      { "tactic": { "name": "Command and Control" } },
+      { "technique": { "name": "T1071.004 - Application Layer Protocol: DNS" } }
+    ],
+    "traits": [            // 脅威シグナルのトレイト（GuardDuty 固有）
+      { "name": "MALICIOUS_DOMAIN", "values": ["malicious-domain.example.com"] }
+    ],
+    "related_events": [    // 個々のシグナル（構成するGuardDuty検出結果）
+      {
+        "title": "Backdoor:EC2/C&CActivity.B!DNS",
+        "type": "FINDING",
+        "uid": "arn:aws:guardduty:ap-northeast-1:111122223333:detector/xxxxxxxx/finding/xxxxxxxx"
+      }
+    ],
+    "created_time_dt": "2025-05-25T10:00:00Z",
+    "first_seen_time_dt": "2025-05-25T09:00:00Z",
+    "last_seen_time_dt": "2025-05-25T10:00:00Z",
+    "modified_time_dt": "2025-05-25T10:00:00Z",
+    "uid": "arn:aws:guardduty:ap-northeast-1:111122223333:detector/xxxxxxxx/finding/xxxxxxxx"
+  },
+
+  "resources": [
+    {
+      "type": "AWS::EC2::Instance",
+      "uid": "i-xxxxxxxxxxxxxxxxx",
+      "cloud_partition": "aws",
+      "provider": "AWS",
+      "region": "ap-northeast-1",
+      "owner": { "account": { "uid": "111122223333" } }
+    }
+  ],
+
+  "vendor_attributes": { "severity": "Critical", "severity_id": 5 }
+}
+```
+
+:::
+
+:::details Vulnerability Finding（class_uid: 2002）— 脆弱性検出（Inspector）
+
+```json
+{
+  "activity_id": 2,
+  "activity_name": "Update",
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Vulnerability Finding",
+  "class_uid": 2002,
+  "type_name": "Vulnerability Finding: Update",
+  "type_uid": 200202,
+  "severity_id": 5,
+  "severity": "Critical",
+  "status_id": 1,
+  "status": "New",
+  "time_dt": "2025-05-25T10:00:00Z",
+
+  "metadata": {
+    "product": {
+      "name": "Inspector",
+      "vendor_name": "AWS",
+      "uid": "arn:aws:securityhub:ap-northeast-1::productv2/aws/inspector"
+    },
+    "profiles": ["cloud", "datetime", "aws/cloud_resources"],
+    "extensions": [{ "name": "aws", "uid": "998", "version": "1.0.0" }],
+    "uid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "version": "1.8.0"
+  },
+
+  "cloud": {
+    "account": { "name": "my-account", "uid": "111122223333" },
+    "provider": "AWS",
+    "region": "ap-northeast-1"
+  },
+
+  "finding_info": {
+    "title": "CVE-XXXX-XXXXX - affected-package",
+    "desc": "...(CVE description)...",
+    "types": ["Software and Configuration Checks/Vulnerabilities/CVE", "Vulnerabilities"],
+    "created_time_dt": "2025-05-24T00:45:31.042Z",
+    "first_seen_time_dt": "2025-05-24T00:45:31.042Z",
+    "last_seen_time_dt": "2025-05-24T08:03:59.403Z",
+    "modified_time_dt": "2025-05-24T08:03:59.403Z",
+    "uid": "arn:aws:inspector2:ap-northeast-1:111122223333:finding/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
+
+  "resources": [
+    {
+      "type": "AWS::EC2::Instance",
+      "uid": "i-xxxxxxxxxxxxxxxxx",
+      "cloud_partition": "aws",
+      "provider": "AWS",
+      "region": "ap-northeast-1",
+      "owner": { "account": { "uid": "111122223333" } }
+    }
+  ],
+
+  "vulnerabilities": [     // CVE 詳細（Vulnerability Finding 固有）
+    {
+      "cve": {
+        "uid": "CVE-XXXX-XXXXX",
+        "desc": "...",
+        "cvss": [
+          {
+            "base_score": 10,
+            "severity": "CRITICAL",
+            "vector_string": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+            "vendor_name": "NVD",
+            "version": "3.1"
+          }
+        ],
+        "epss": { "score": "0.00018" }
+      },
+      "affected_packages": [
+        {
+          "name": "affected-package",
+          "version": "x.y.z",
+          "fixed_in_version": "x.y.z+1",
+          "package_manager": "GENERIC"
+        }
+      ],
+      "is_exploit_available": true,
+      "is_fix_available": true
+    }
+  ],
+
+  "vendor_attributes": { "severity": "Critical", "severity_id": 5 }
+}
+```
+
+:::
+
+:::details Data Security Finding（class_uid: 2006）— 機密データ検出（Macie）
+
+```json
+{
+  "activity_id": 1,
+  "activity_name": "Create",
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Data Security Finding",
+  "class_uid": 2006,
+  "type_name": "Data Security Finding: Create",
+  "type_uid": 200601,
+  "severity_id": 3,
+  "severity": "Medium",
+  "status_id": 1,
+  "status": "New",
+  "time_dt": "2025-05-25T10:00:00Z",
+
+  "metadata": {
+    "product": {
+      "name": "Macie",
+      "vendor_name": "AWS",
+      "uid": "arn:aws:securityhub:ap-northeast-1::productv2/aws/macie"
+    },
+    "profiles": ["cloud", "data_classification", "datetime", "aws/cloud_resources"],
+    "extensions": [{ "name": "aws", "uid": "998", "version": "1.0.0" }],
+    "uid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "version": "1.8.0"
+  },
+
+  "cloud": {
+    "account": { "name": "my-account", "uid": "111122223333" },
+    "provider": "AWS",
+    "region": "ap-northeast-1"
+  },
+
+  "databucket": {          // S3 バケット・オブジェクト情報（Data Security Finding 固有）
+    "name": "my-bucket",
+    "uid": "arn:aws:s3:::my-bucket",
+    "type": "S3",
+    "type_id": 1,
+    "is_public": false,
+    "is_encrypted": true,
+    "region": "ap-northeast-1",
+    "file": {
+      "data_classifications": [
+        {
+          "category": "Personal",
+          "category_id": 1,
+          "discovery_details": [{ "count": 3, "type": "NAME" }],
+          "status": "Partial",
+          "status_id": 2
+        }
+      ]
+    }
+  },
+
+  "finding_info": {
+    "title": "The S3 object contains multiple categories of sensitive data",
+    "desc": "The S3 object contains more than one category of sensitive data.",
+    "types": ["SensitiveData:S3Object/Multiple", "Sensitive Data"],
+    "created_time_dt": "2025-05-25T10:00:00Z",
+    "last_seen_time_dt": "2025-05-25T10:00:00Z",
+    "modified_time_dt": "2025-05-25T10:00:00Z",
+    "uid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
+
+  "resources": [
+    {
+      "type": "AWS::S3::Object",
+      "uid": "path/to/object.gz",
+      "cloud_partition": "aws",
+      "provider": "AWS",
+      "region": "ap-northeast-1",
+      "owner": { "account": { "uid": "111122223333" } }
+    }
+  ],
+
+  "vendor_attributes": { "severity": "Medium", "severity_id": 3 }
+}
+```
+
+:::
+
 
 ### OCSF と ASFF の対応関係
 
