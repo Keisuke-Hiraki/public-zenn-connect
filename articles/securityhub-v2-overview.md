@@ -3,7 +3,7 @@ title: "AWS Security Hub CSPM から何が変わった？新しい Security Hub 
 emoji: "🛡️"
 type: "tech"
 topics: ["aws", "security", "securityhub"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
