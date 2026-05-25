@@ -3,3 +3,4 @@ node_modules
 .claude
 presentations/**/dist/
 presentations/**/.slidev/
+.playwright-mcp/
