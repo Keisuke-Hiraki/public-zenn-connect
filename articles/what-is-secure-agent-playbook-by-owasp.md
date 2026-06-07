@@ -1,5 +1,5 @@
 ---
-title: "OWASP Secure Agent Playbookのような体系だった思考ロジックを使うことでAIによるコードのセキュリティレビューの品質が上がる話"
+title: "OWASP Secure Agent Playbookのような体系的な思考ロジックでAIのコードのセキュリティレビューを品質向上させてみる"
 emoji: "📋"
 type: "tech"
 topics: ["owasp", "security", "aiエージェント"]
