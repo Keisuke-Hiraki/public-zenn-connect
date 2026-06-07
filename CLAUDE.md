@@ -48,7 +48,7 @@ Screenshots taken directly from macOS (Cmd+Shift+4) may be named with the `SCR-Y
 - Written in **Japanese**
 - Start with a brief self-introduction line referencing the author's role at CSC / CloudFastener
   - Example: `こんにちは、CSC の [CloudFastener](https://cloud-fastener.com/) というプロダクトで TAM のポジションで働いている平木です！`
-- Use Zenn-specific Markdown extensions: `:::message` for info boxes, `:::message alert` for warnings
+- Use Zenn-specific Markdown extensions: `:::message` for info boxes, `:::message alert` for warnings, `:::details タイトル` / `:::` for collapsible accordion blocks (do NOT use HTML `<details>`/`<summary>` tags — they do not render correctly on Zenn)
 - Heading levels start at `##` (not `#`, since `#` is reserved for the title via frontmatter)
 - URLs on their own line render as embed cards in Zenn (no need for `[text](url)` format)
 - Main topics are AWS services and security
