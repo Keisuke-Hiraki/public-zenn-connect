@@ -3,7 +3,7 @@ title: "Agent Threat Rules (ATR) とは？ MCP や SKILL.md を守る新しい�
 emoji: "🛡"
 type: "tech"
 topics: ["security", "aiエージェント", "atr", "mcp", "aws"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
