@@ -3,7 +3,7 @@ title: "Security Hub CSPM に新しいセキュリティ標準の「AI Security 
 emoji: "🔒"
 type: "tech"
 topics: ["aws", "security", "securityhub", "bedrock", "sagemaker"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
@@ -33,7 +33,9 @@ https://aws.amazon.com/about-aws/whats-new/2026/06/aws-security-hub-cspm-ai-secu
 
 ## AI Security Best Practices v1.0.0 とは
 
-Security Hub CSPM のスタンダードは、特定のセキュリティフレームワークや AWS のベストプラクティスへの準拠状況を継続的に評価するコントロール集です。既存の AWS Foundational Security Best Practices (FSBP) が AWS サービス全般を幅広く対象にしているのに対し、今回追加された AI Security Best Practices は AI ワークロードに特化した内容になっています。
+Security Hub CSPM のスタンダードは、特定のセキュリティフレームワークや AWS のベストプラクティスへの準拠状況を継続的に評価するコントロール集です。  
+
+既存の AWS Foundational Security Best Practices (FSBP) が AWS サービス全般を幅広く対象にしているのに対し、今回追加された AI Security Best Practices は AI ワークロードに特化した内容になっています。
 
 スタンダードは AWS セキュリティエキスパートが設計したもので、「ネットワーク分離」「保存時の暗号化」「転送時の暗号化」「アクセス制御」「可用性」「監査ログ」「プラットフォーム管理」といったセキュリティドメインを横断してカバーします。
 
