@@ -12,7 +12,7 @@ publication_name: cscloud_blog
 AI ワークロードを AWS 上で構築するとき、各サービスのセキュリティ設定を網羅的に確認するのは意外と手間がかかります。  
 SageMaker ノートブックのインターネットアクセス設定、Bedrock データソースへのカスタマー管理 KMS キーの適用、Bedrock AgentCore ゲートウェイの認証設定といった項目を、個別にドキュメントを調べながら確認する必要がありました。
 
-2026年7月1日、Security Hub CSPM にこうした確認を自動化する新スタンダード「AI Security Best Practices v1.0.0」が追加されました。  
+2026年7月1日、Security Hub CSPM にこうした確認を自動化する新しいセキュリティ標準「AI Security Best Practices v1.0.0」が追加されました。  
 Amazon Bedrock・Bedrock AgentCore・Amazon SageMaker を対象にした 31 個のコントロールで、AI ワークロードのセキュリティベストプラクティスへの準拠状況を継続的に評価します。
 
 https://aws.amazon.com/about-aws/whats-new/2026/06/aws-security-hub-cspm-ai-security/
