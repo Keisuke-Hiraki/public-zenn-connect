@@ -2,8 +2,9 @@
 title: "AWS Security HubでAzureの環境も監視できるようになったので連携の構造や何が嬉しいのかをまとめてみた"
 emoji: "🔧"
 type: "tech"
-topics: ["aws", "azure", "securityhub", "config", "security"]
-published: false
+topics: ["aws", "azure", "securityhub", "マルチクラウド", "security"]
+published: true
+published_at: 2026-07-09 07:00
 publication_name: cscloud_blog
 ---
 
