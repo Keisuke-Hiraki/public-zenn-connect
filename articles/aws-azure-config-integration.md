@@ -28,7 +28,7 @@ https://zenn.dev/khirasan/scraps/524c021ad08f44
 
 :::message
 **この記事の6行まとめ**
-- Security Hub（新コンソール /securityhub/v2）がAzure VM、ACR、Function Apps、Azure認証情報の監視に対応した
+- Security Hub（新コンソール）がAzure VM、ACR、Function Apps、Azure認証情報の監視に対応した
 - リソース構成評価は内部的にSecurity Hub CSPMが担っており、AWS側の知識・ワークフローだけでAzureのセキュリティ状態を一元的に把握できるようになる
 - 裏側ではOIDCフェデレーション認証とAWS Configのサードパーティ統合機能が使われている
 - Azure側でアプリ登録・Event Hub構築、AWS側でコネクタ作成という手順で連携する
@@ -80,7 +80,7 @@ https://zenn.dev/khirasan/scraps/524c021ad08f44
 
 特に、買収・合併や事業部ごとの独自導入によって結果的にAzureリソースが混在しているケースでよく見られます。セキュリティ部門がAzureの構成ミスやインターネット公開状況をリアルタイムに把握できていないことが少なくありません。
 
-Security Hub（v2）がAzureを直接監視できるようになったことで、AWSのSecurity Hubコンソール1つでAWS・Azure両方の検出結果を横断的に確認できるようになります。
+Security Hubの新コンソールがAzureを直接監視できるようになったことで、AWSのSecurity Hubコンソール1つでAWS・Azure両方の検出結果を横断的に確認できるようになります。
 
 単に画面が1つにまとまるだけでなく、すでに運用している以下のような仕組みを、そのままAzureに対しても使い回せるようになる点が大きいです。
 
