@@ -28,13 +28,12 @@ https://zenn.dev/khirasan/scraps/524c021ad08f44
 ![](/images/Screenshot_2026-07-09_at_01-49-20.png)
 
 :::message
-**この記事の6行まとめ**
+**この記事の5行まとめ**
 - Security Hub（新コンソール）がAzure VM、ACR、Function Apps、Azure認証情報の監視に対応した
 - リソース構成評価は内部的にSecurity Hub CSPMが担っており、AWS側の知識・ワークフローだけでAzureのセキュリティ状態を一元的に把握できるようになる
 - 裏側ではOIDCフェデレーション認証とAWS Configのサードパーティ統合機能が使われている
 - Azure側でアプリ登録・Event Hub構築、AWS側でコネクタ作成という手順で連携する
 - 初回30日間は無料でトライアルでき、料金体系はAWSリソースと同じユニット課金・スキャン単価がそのままAzureにも適用される
-- AWS Config・SSMのAPI仕様は公式ドキュメントとAWS公式のAPIリファレンスに基づき確定情報として記載している
 :::
 
 ## 何ができるようになったか
