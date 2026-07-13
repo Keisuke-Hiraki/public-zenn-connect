@@ -4,7 +4,6 @@ emoji: "📖"
 type: "tech"
 topics: ["claudecode", "aiエージェント", "社内勉強会"]
 published: false
-published_at: 2026-07-28 09:30
 publication_name: cscloud_blog
 ---
 
