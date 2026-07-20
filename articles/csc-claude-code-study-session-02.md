@@ -19,9 +19,9 @@ https://zenn.dev/cscloud_blog/articles/csc-claude-code-study-session-01
 :::message
 **この記事の3行まとめ**
 
-- Claude Codeをうまく使えるかどうかの8割は「コンテキスト管理」で決まる
-- `/context` で残量確認、`/compact` で要約、話題が変わったら `/clear` で仕切り直すのが基本運用
-- Permission Modeと`/rewind`(チェックポイント)を理解すれば、「試して、気に入らなければ戻す」という進め方で安心して作業できる
+- コンテキストには上限があり、埋まるほど応答の精度が落ちるため、`/context` で残量確認、`/compact` で要約、話題が変わったら `/clear` で仕切り直すのが基本運用
+- Permission Modeは `Shift+Tab` で切り替え、影響の大きい作業はPlan modeでまず計画を確認してから進める
+- ファイルの変更はチェックポイント(`/rewind` または `Esc`を2回)でいつでも元に戻せるので、過度に慎重にならず積極的に試してよい
 :::
 
 ## 今日のゴール
