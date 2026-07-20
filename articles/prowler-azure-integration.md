@@ -15,7 +15,7 @@ publication_name: cscloud_blog
 :::message
 **この記事の3行まとめ**
 - Azure 環境を Prowler でスキャンする場合には `--sp-env-auth` / `--az-cli-auth` / `--browser-auth` / `--managed-identity-auth` の4つの認証方式がある
-- 「顧客にユーザーを払い出してもらう」運用では `--az-cli-auth` ＋ 管理グループ単位のロール付与が実務的な解
+- 「ユーザーを払い出してもらう」運用では `--az-cli-auth` ＋ 管理グループ単位のロール付与が実務的な解
 - 必要な権限は RBAC（`Reader` + カスタムロール `ProwlerRole`）と Microsoft Entra ID（Graph API 権限3つ）の2系統
 :::
 
