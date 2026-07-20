@@ -3,7 +3,8 @@ title: "Azure 環境を Prowler と連携してセキュリティアセスメン
 emoji: "✅"
 type: "tech"
 topics: ["azure", "prowler", "security"]
-published: false
+published: true
+published_at: 2026-07-21 08:00
 publication_name: cscloud_blog
 ---
 
@@ -12,19 +13,17 @@ publication_name: cscloud_blog
 普段は AWS を扱うことが多いのですが、今回顧客環境の Azure 環境をクラウドセキュリティ監査OSS「Prowler」でスキャンする機会がありましたので備忘録がてら投稿しました。
 
 :::message
-**この記事の5行まとめ**
+**この記事の3行まとめ**
 - Azure 環境を Prowler でスキャンする場合には `--sp-env-auth` / `--az-cli-auth` / `--browser-auth` / `--managed-identity-auth` の4つの認証方式がある
 - 「顧客にユーザーを払い出してもらう」運用では `--az-cli-auth` ＋ 管理グループ単位のロール付与が実務的な解
 - 必要な権限は RBAC（`Reader` + カスタムロール `ProwlerRole`）と Microsoft Entra ID（Graph API 権限3つ）の2系統
-- ユーザー認証ベースでは Entra 側の権限を「ディレクトリロール」単位でしか絞れず、意図せず過剰な権限になりやすい
-- 最小権限（`Reader` + `Global Reader`）でも Owner 権限と同等の検出結果が得られることを実測で確認できた
 :::
 
 ## Prowler とは
 
 Prowler は AWS・Azure・Google Cloud・Kubernetes などマルチクラウドに対応したオープンソースのセキュリティ監査ツールです。CIS や NIST、ISO27001 といった各種コンプライアンスフレームワークに準拠したチェック項目を持ち、実行するだけで大量のセキュリティ設定ミスを検出できます。
 
-SaaS 版の「Prowler Cloud」と OSS 版の「Prowler CLI」が存在しますが、今回は Prowler リポジトリをクローンして使う OSS 版（CLI）を利用しました。執筆時点でリポジトリの `pyproject.toml` に記載されているバージョンは v5.36.0 です（検証開始時は v5.31.1 でしたが、途中で最新版へアップグレードしています）。
+SaaS 版の「Prowler Cloud」と OSS 版の「Prowler CLI」が存在しますが、今回は Prowler リポジトリをクローンして使う OSS 版（CLI）を利用しました。
 
 https://github.com/prowler-cloud/prowler
 
@@ -117,6 +116,13 @@ Prowler はデフォルトでは、実行したユーザーがアクセス可能
 ## 実際に権限を付与してみる
 
 検証環境（テナント `<tenant-domain>`、Tenant Root Group 配下に3サブスクリプション）で、実際に権限を付与した手順です。
+
+### Azure CLIのインストール
+
+まずは、Azure CLI をインストールします。  
+下記を参考に、環境に合わせてインストールしてください。
+
+https://learn.microsoft.com/ja-jp/cli/azure/install-azure-cli?view=azure-cli-latest
 
 ### 専用ユーザーの作成
 
