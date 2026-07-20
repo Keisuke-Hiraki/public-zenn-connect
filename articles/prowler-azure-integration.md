@@ -10,7 +10,7 @@ publication_name: cscloud_blog
 
 こんにちは、CSC の [CloudFastener](https://cloud-fastener.com/) というプロダクトで TAM のポジションで働いている平木です！
 
-普段は AWS を扱うことが多いのですが、今回顧客環境の Azure 環境をクラウドセキュリティ監査OSS「Prowler」でスキャンする機会がありましたので備忘録がてら投稿しました。
+普段は AWS を扱うことが多いのですが、今回 Azure 環境をクラウドセキュリティ監査OSS「Prowler」でスキャンする機会がありましたので備忘録がてら投稿しました。
 
 :::message
 **この記事の3行まとめ**
