@@ -12,7 +12,7 @@ The repository has the following structure:
 articles/       # Zenn articles (Markdown)
 books/          # Zenn books (currently unused)
 images/         # Article screenshots and diagrams
-presentations/  # Slidev presentation decks (not published to Zenn)
+codes/          # Standalone code samples referenced from articles (not published to Zenn)
 ```
 
 ## Article Frontmatter
@@ -76,12 +76,9 @@ These patterns improve readability for long or comparison-focused articles:
   - Any internal tool names or bookmarks not relevant to the article content
 - Browser bookmarks/toolbar items unrelated to the article topic do not need to be hidden
 
-## Presentations
+## Code Samples
 
-The `presentations/` directory contains [Slidev](https://sli.dev/) slide decks. These are **not** published to Zenn.
-
-- Each deck lives in its own subdirectory (e.g., `presentations/aws-marketplace-seminar/`)
-- Each deck has `slides.md` (Slidev Markdown), `package.json`, and an `image/` directory
+The `codes/` directory contains standalone code (e.g., Lambda functions) referenced from articles. These are **not** published to Zenn directly.
 
 ## Article Review
 
