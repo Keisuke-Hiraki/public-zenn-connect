@@ -3,7 +3,7 @@ title: "[社内勉強会資料公開] Claude Code 入門 #3 — CLAUDE.mdとメ�
 emoji: "📖"
 type: "tech"
 topics: ["claudecode", "aiエージェント", "社内勉強会"]
-published: false
+published: true
 published_at: 2026-07-28 09:30
 publication_name: cscloud_blog
 ---
