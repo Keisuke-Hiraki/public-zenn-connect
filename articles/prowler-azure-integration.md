@@ -381,7 +381,7 @@ Detailed compliance results are in <output_dir>/compliance/
 
 ### 具体的な検出内容
 
-CS出力時のカラムの構造は以下です。
+CSV出力時のカラムの構造は以下です。
 
 | # | カラム名 | 意味 |
 | --- | --- | --- |
