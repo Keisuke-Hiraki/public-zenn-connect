@@ -2,7 +2,7 @@
 title: "IAM Identity Center のマルチリージョン対応のサポート範囲の拡大がセキュリティ対策上でも重要な件"
 emoji: "🌐"
 type: "tech"
-topics: ["aws", "security", "iam", "identitycenter", "organizations"]
+topics: ["aws", "security", "identitycenter", "organizations"]
 published: false
 publication_name: cscloud_blog
 ---
