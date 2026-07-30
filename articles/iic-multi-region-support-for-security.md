@@ -3,7 +3,7 @@ title: "IAM Identity Center のマルチリージョン対応のサポート範�
 emoji: "🌐"
 type: "tech"
 topics: ["aws", "security", "identitycenter", "organizations"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
