@@ -1,5 +1,5 @@
 ---
-title: "IAM Identity Center のマルチリージョン対応が Identity Center directory にも拡大 — 認証基盤の可用性はセキュリティ対策として必要という話"
+title: "IAM Identity Center のマルチリージョン対応のサポート範囲の拡大がセキュリティ対策でも重要な件"
 emoji: "🌐"
 type: "tech"
 topics: ["aws", "security", "iam", "identitycenter", "organizations"]
