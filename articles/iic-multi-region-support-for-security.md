@@ -26,7 +26,7 @@ https://aws.amazon.com/jp/about-aws/whats-new/2026/07/aws-iam-identity-center-ex
 - 利用には組織インスタンス・マルチリージョン対応の customer managed KMS キーなどの前提条件がある
 :::
 
-![](/images/ChatGPT_Image_20260730_11_41_55.png)
+![](/images/ChatGPT_Image_20260731_13_24_55.png)
 
 ## なぜ認証基盤の可用性が「セキュリティ対策」なのか
 
