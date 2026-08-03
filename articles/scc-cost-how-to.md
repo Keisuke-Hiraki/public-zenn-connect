@@ -3,7 +3,7 @@ title: "Security Command Center Premium のコストを1つずつ確認しなが
 emoji: "🧮"
 type: "idea"
 topics: ["googlecloud", "security", "scc", "cost"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
