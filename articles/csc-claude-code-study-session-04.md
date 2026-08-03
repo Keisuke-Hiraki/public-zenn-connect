@@ -3,7 +3,8 @@ title: "[社内勉強会資料公開] Claude Code 入門 #4 — permissions・ho
 emoji: "📖"
 type: "tech"
 topics: ["claudecode", "aiエージェント", "社内勉強会"]
-published: false
+published: true
+published_at: 2026-08-04 09:30
 publication_name: cscloud_blog
 ---
 
@@ -131,7 +132,11 @@ Devcontainerによる隔離は安心感が高い一方、Docker環境の準備�
 
 ### Claude Code自体のリスクも知っておく
 
-Claude Code自体も一つのソフトウェアである以上、脆弱性が報告されることがあります。例えば、信頼できないリポジトリをcloneしてClaude Codeに読み込ませた際に、リポジトリ内に仕込まれた悪意のある指示(プロンプトインジェクション)が実行されてしまうリスクが指摘された事例があります(参考: https://prtimes.jp/main/html/rd/p/000000493.000021207.html 、 https://qiita.com/GeneLab_999/items/a02a5d32f472e3265397 )。
+Claude Code自体も一つのソフトウェアである以上、脆弱性が報告されることがあります。例えば、信頼できないリポジトリをcloneしてClaude Codeに読み込ませた際に、リポジトリ内に仕込まれた悪意のある指示(プロンプトインジェクション)が実行されてしまうリスクが指摘された事例があります。
+
+https://prtimes.jp/main/html/rd/p/000000493.000021207.html
+
+https://qiita.com/GeneLab_999/items/a02a5d32f472e3265397
 
 こうしたリスクへの備えとしても、「出所の分からないリポジトリやファイルを扱うときは隔離環境で」という原則が効いてきます。また、Claude Code自体も日々アップデートされているため、ネイティブインストーラの自動更新機能を有効にしておき、常に最新版を使うことも基本的な対策になります。
 
@@ -183,7 +188,11 @@ SessionEndフックを設定してください。
 
 ## ベストプラクティスのひとこと
 
-Claude Code公式のPermission Modesドキュメント(参考: https://code.claude.com/docs/en/permission-modes.md )では、`allow`/`deny`/`ask`によるルールベースの権限制御と、`default`から始まる段階的なモード設計が示されています。ここに通底しているのは「権限は最小の範囲から始めて、信頼が積み上がるにつれて徐々に広げる」という考え方です。いきなり `bypassPermissions` のような広い権限を与えるのではなく、まずは読み取り専用の範囲で挙動を観察し、問題がないと分かった操作から少しずつ自動承認の対象を広げていく、という段階的なアプローチを意識してください。
+Claude Code公式のPermission Modesドキュメントでは、`allow`/`deny`/`ask`によるルールベースの権限制御と、`default`から始まる段階的なモード設計が示されています。
+
+https://code.claude.com/docs/en/permission-modes
+
+ここに通底しているのは「権限は最小の範囲から始めて、信頼が積み上がるにつれて徐々に広げる」という考え方です。いきなり `bypassPermissions` のような広い権限を与えるのではなく、まずは読み取り専用の範囲で挙動を観察し、問題がないと分かった操作から少しずつ自動承認の対象を広げていく、という段階的なアプローチを意識してください。
 
 ## おわりに
 
