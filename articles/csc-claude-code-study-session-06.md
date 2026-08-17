@@ -3,7 +3,8 @@ title: "[社内勉強会資料公開] Claude Code 入門 #6 — Agent Skillsで�
 emoji: "📖"
 type: "tech"
 topics: ["claudecode", "aiエージェント", "社内勉強会"]
-published: false
+published: true
+published_at: 2026-08-18 09:30
 publication_name: cscloud_blog
 ---
 
@@ -31,9 +32,11 @@ Agent Skills(エージェントスキル)の仕組みを理解し、自分の定
 
 ### Agent Skillsとは何か
 
-前回までの回で、CLAUDE.mdという「Claude Codeに毎回読み込ませる基本ルール」を扱いました。しかし、業務のすべてのルールをCLAUDE.mdに詰め込むと、ファイルが肥大化し、かえってClaude Codeが本当に重要な指示を読み落としやすくなってしまいます。
+前回までの回で、CLAUDE.mdという「Claude Codeに毎回読み込ませる基本ルール」を扱いました。  
+しかし、業務のすべてのルールをCLAUDE.mdに詰め込むと、ファイルが肥大化し、かえってClaude Codeが本当に重要な指示を読み落としやすくなってしまいます。
 
-そこで登場するのが「Agent Skills(エージェントスキル)」です。Skillは、特定の作業をするときだけClaude Codeに読み込ませる手順書のようなもので、`.claude/skills/<skill-name>/SKILL.md` というファイルに定義します。ユーザーが `/skill-name` と入力して手動で呼び出すこともできますし、SKILL.mdに書かれた説明文(description)をもとに、Claude Codeが「今の会話にはこのスキルが必要そうだ」と自動的に判断して発動させることもできます。
+そこで登場するのが「Agent Skills(エージェントスキル)」です。  
+Skillは、特定の作業をするときだけClaude Codeに読み込ませる手順書のようなもので、`.claude/skills/<skill-name>/SKILL.md` というファイルに定義します。ユーザーが `/skill-name` と入力して手動で呼び出すこともできますし、SKILL.mdに書かれた説明文(description)をもとに、Claude Codeが「今の会話にはこのスキルが必要そうだ」と自動的に判断して発動させることもできます。
 
 ### Progressive Disclosure(段階的開示)という設計思想
 
@@ -46,7 +49,9 @@ CLAUDE.mdとSkillsの最大の違いは、「いつ読み込まれるか」で�
 
 たとえるなら、CLAUDE.mdは「デスクに常に置いてある業務マニュアルの表紙」、Skillsは「棚にしまってあり、必要なときだけ取り出す作業手順書の束」というイメージです。
 
-なお、Agent Skillsはもともと Anthropic が開発した仕組みですが、現在はオープンな標準規格として公開されており、Claude Code以外の複数のAIエージェントツールでも採用が広がっています(参考: https://agentskills.io/home )。特定のツールに縛られない汎用スキルとして育てていける、という点も覚えておくとよいでしょう。
+なお、Agent Skillsはもともと Anthropic が開発した仕組みですが、現在はオープンな標準規格として公開されており、Claude Code以外の複数のAIエージェントツールでも採用が広がっています。特定のツールに縛られない汎用スキルとして育てていける、という点も覚えておくとよいでしょう。
+
+https://agentskills.io/home
 
 ### SKILL.mdの基本構造
 
@@ -75,23 +80,15 @@ description: 未コミットの変更内容を要約し、リスクをフラグ�
 |---|---|
 | `name` | スキルの名前(`/name`で呼び出せる) |
 | `description` | どんな場面で使うスキルかの説明。Claude Codeが自動発動を判断する際の手がかりになる |
-| `allowed-tools` | このスキル実行中に、確認なしで使ってよいツールを制限する |
+| `allowed-tools` | このスキル実行中に、確認なしで使ってよいツールを許可する |
 
 特に`description`は、単なる説明文ではなく「発動条件そのもの」だと捉えるとよいでしょう。ユーザーが自然に使いそうな言い回しを複数含めておくと、Claude Codeが的確なタイミングでスキルを呼び出してくれるようになります。
 
-SKILL.md本体のボリュームには目安があり、Agent Skillsの仕様では500行・5,000トークン程度に収めることが推奨されています(参考: https://agentskills.io/skill-creation/best-practices )。それ以上の詳細な手順や参照資料は、`references/`フォルダに分けて「〇〇のときはこのファイルを読む」と指示しておくことで、必要なときだけ追加で読み込ませることができます。これもProgressive Disclosureの考え方の延長です。
+SKILL.md本体のボリュームには目安があり、Agent Skillsの仕様では500行・5,000トークン程度に収めることが推奨されています。それ以上の詳細な手順や参照資料は、`references/`フォルダに分けて「〇〇のときはこのファイルを読む」と指示しておくことで、必要なときだけ追加で読み込ませることができます。これもProgressive Disclosureの考え方の延長です。
+
+https://agentskills.io/skill-creation/best-practices 
 
 また、実務で使い込んでいくと、「このシステムのユーザーIDはAPIでは`uid`という名前になっている」といった、Claude Codeが自力では気づけない環境固有の落とし穴に出会うことがあります。こうした情報は「Gotchas(落とし穴)」という見出しでSKILL.mdにまとめておくと、同じ間違いを繰り返させずに済みます。
-
-### 実例: 実務で使っているスキルの紹介
-
-筆者が実際に業務で使っているスキルをいくつか紹介します。いずれも「よく発生するのに、毎回一から指示するのが面倒な作業」をスキル化したものです。
-
-- **WAFログ分析スキル(waf-query / waf-analyze)**: AWS WAFのログをAmazon Athena(ログをSQLで検索できるサービス)でクエリし、多段階で分析してリスクを評価し、追加・変更すべきWAFルールを提案します。「WAFログを分析して」「攻撃されているか確認して」といった自然な日本語の一言で自動的に発動するよう、descriptionに想定される言い回しを複数書き込んであります。
-- **ナレッジ検索スキル(obsidian-search)**: 過去のセッションで得た知見をまとめたノートから、必要な情報を検索するスキルです。「以前どう対応したか思い出せない」という場面で活躍します。
-- **設定監査スキル(claude-code-config-check)**: プロジェクトのClaude Code設定(CLAUDE.mdやsettings.jsonなど)を、Anthropic公式のベストプラクティスに照らしてチェックするスキルです。「設定が正しいか確認して」といった依頼で自動的に発動します。
-
-これらに共通するのは、「診断業務や運用業務のなかで繰り返し行っている手順」を切り出している点です。TAMの業務にも、同じように繰り返し発生する定型作業が必ずあるはずです。
 
 ### CLAUDE.mdとSkillsの使い分け
 
@@ -108,6 +105,36 @@ SKILL.md本体のボリュームには目安があり、Agent Skillsの仕様で
 ここまでSKILL.mdの構造を説明してきましたが、実際にスキルを作るときは、frontmatterやdescriptionの書き方を一から自分で考える必要はありません。Anthropicは、スキル作成そのものを支援する`skill-creator`というSkillを`anthropics/skills`リポジトリで公式に配布しています(参考: https://github.com/anthropics/skills )。
 
 `skill-creator`は、作りたいスキルの目的をヒアリングしながらSKILL.mdのひな形を生成し、テストケースの作成・実行や、descriptionが意図通りに発動するかの検証まで対話的に進めてくれます。プラグインの仕組み(次回詳しく扱います)を使って導入し、`/skill-creator` と呼び出すか「新しいスキルを作りたい」と話しかければ自動的に発動します。今日のハンズオンも、このskill-creatorを使って進めていきます。
+
+### 外部からインストールするSkillsには危険なものもある
+
+Agent Skillsは自分で書くだけでなく、GitHubやマーケットプレイス経由で他人が公開したSkillを導入することもできます。ただし、これは便利な一方でセキュリティ上のリスクも伴う点に注意してください。
+
+Skillの本体であるSKILL.mdは、Claude Codeへの「指示文」そのものです。  
+Claude Code公式ドキュメントでも、Skillは`allowed-tools`のfrontmatterを使って自分自身に広範なツール実行権限を与えられるため、リポジトリに含まれるSkillの`allowed-tools`は実行前にレビューすべきだと明記されています。
+
+https://code.claude.com/docs/ja/skills
+
+さらに、SKILL.mdには`` !`command` `` という記法でシェルコマンドを埋め込み、その実行結果をClaude Codeへの指示に直接注入する機能(Dynamic context injection)もあります。  
+悪意のあるSkillであれば、この仕組みを使って任意のコマンドを実行させたり、外部への情報送信を指示に紛れ込ませたりすることが理論上可能です。
+
+:::message alert
+公式マーケットプレイス以外(いわゆる野良マーケットプレイス)で配布されているSkillsを対象にした調査では、約26%に脆弱性が、約5%に明確な悪意ある挙動が確認されたと報告されています。プロンプトインジェクション、間接的な悪意ある指示の混入、トークンや設定情報の外部送信、後から改ざんされて安全だったはずのSkillが危険化するサプライチェーン攻撃などが具体的なリスクとして挙げられています。
+:::
+
+https://zenn.dev/nuits_jp/articles/2026-01-19-risks-of-skills-marketplace
+
+クラスメソッドの社内勉強会資料でも、Skillのソースは次のように信頼できるものへ限定することが推奨されています。
+
+- 自作したSkill
+- 組織内で管理・レビューされたSkill
+- `anthropics/skills`のような、信頼できる公式配布元のSkill
+
+そして、サードパーティのSkillを使う場合は「SKILL.md本体だけでなく、付属のscriptsやreferencesの内容まですべて確認し、評価できないものは使わない」ことが推奨されています。
+
+https://dev.classmethod.jp/articles/claude-code-skills-for-cloud-bu-consulting-members/
+
+今日のハンズオンで使う`anthropics/skills`は、Anthropic公式が管理するリポジトリなので上記の基準に合致しますが、今後チームでSkillsを社外から取り込む際は、必ず中身を読んでから導入する運用を徹底しましょう。
 
 ## ミニハンズオン
 
@@ -158,14 +185,23 @@ descriptionが適切であれば、Claude Codeが自動的に先ほど作った�
 
 ## ベストプラクティスのひとこと
 
-カンリー社内勉強会資料(Zenn)では、「フィードバックの資産化」という考え方が紹介されています。これは、Claude Codeとのやり取りで得た気づきを、次のような段階を踏んで組織の資産に変えていくというモデルです。
+カンリー社内勉強会資料では、「フィードバックの資産化」という考え方が紹介されています。
+
+https://zenn.dev/canly/articles/cc0891517e45cc
+
+これは、Claude Codeとのやり取りで得た気づきを、次のような段階を踏んで組織の資産に変えていくというモデルです。
 
 1. **その場で修正する**: 会話の中でその都度指摘し、その回だけ直す
 2. **ルール化する**: 繰り返し指摘するようなら、CLAUDE.mdにルールとして書き込む
 3. **スキル化する**: さらに複雑な手順として繰り返し使うなら、今日学んだSkillsとして切り出す
 4. **自動化する**: 完全に定型化できたら、hooksやMCPと組み合わせて自動実行する
 
-今日作ったスキルは、まさにこの「3. スキル化する」の段階にあたります。自分の中で「これは毎回同じ手順だな」と感じた作業があれば、CLAUDE.mdに書き足す前に、まずSkills化を検討してみるとよいでしょう。あわせて、Agent Skillsのオープン仕様を整備しているagentskills.ioのベストプラクティスガイド(参考: https://agentskills.io/skill-creation/best-practices )が強調する「エージェントが既に知っていることは書かず、知らないことだけを書く」という原則も意識してください。
+今日作ったスキルは、まさにこの「3. スキル化する」の段階にあたります。  
+自分の中で「これは毎回同じ手順だな」と感じた作業があれば、CLAUDE.mdに書き足す前に、まずSkills化を検討してみるとよいでしょう。  
+
+あわせて、Agent Skillsのオープン仕様を整備しているagentskills.ioのベストプラクティスガイドが強調する「エージェントが既に知っていることは書かず、知らないことだけを書く」という原則も意識してください。
+
+https://agentskills.io/skill-creation/best-practices
 
 ## おわりに
 
@@ -175,10 +211,11 @@ descriptionが適切であれば、Claude Codeが自動的に先ほど作った�
 
 ## 参考リンク
 
-- [Claude Code Skills(公式)](https://code.claude.com/docs/en/skills.md)
-- [Claude Code ベストプラクティス(公式)](https://code.claude.com/docs/en/best-practices.md)
+- [Claude Code Skills(公式)](https://code.claude.com/docs/en/skills)
+- [Claude Code ベストプラクティス(公式)](https://code.claude.com/docs/en/best-practices)
 - [Agent Skills 公式仕様サイト](https://agentskills.io/home)
 - [Agent Skills スキル作成のベストプラクティス](https://agentskills.io/skill-creation/best-practices)
 - [anthropics/skills(skill-creatorを含む公式サンプル集、GitHub)](https://github.com/anthropics/skills)
-- [クラスメソッド DevelopersIO「Claude Code Skills(Agent Skills)入門」社内勉強会](https://dev.classmethod.jp/en/articles/claude-code-skills-for-cloud-bu-consulting-members/)
+- [クラスメソッド DevelopersIO「Claude Code Skills(Agent Skills)入門」社内勉強会](https://dev.classmethod.jp/articles/claude-code-skills-for-cloud-bu-consulting-members/)
 - [カンリー社内Claude Code勉強会資料(Zenn)](https://zenn.dev/canly/articles/cc0891517e45cc)
+- [Skillマーケットプレイスのリスクについて(Zenn)](https://zenn.dev/nuits_jp/articles/2026-01-19-risks-of-skills-marketplace)
