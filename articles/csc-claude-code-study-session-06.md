@@ -102,7 +102,9 @@ https://agentskills.io/skill-creation/best-practices
 
 ### SKILL.mdは手書きせず、`skill-creator`に作ってもらう
 
-ここまでSKILL.mdの構造を説明してきましたが、実際にスキルを作るときは、frontmatterやdescriptionの書き方を一から自分で考える必要はありません。Anthropicは、スキル作成そのものを支援する`skill-creator`というSkillを`anthropics/skills`リポジトリで公式に配布しています(参考: https://github.com/anthropics/skills )。
+ここまでSKILL.mdの構造を説明してきましたが、実際にスキルを作るときは、frontmatterやdescriptionの書き方を一から自分で考える必要はありません。Anthropicは、スキル作成そのものを支援する`skill-creator`というSkillを`anthropics/skills`リポジトリで公式に配布しています。
+
+https://github.com/anthropics/skills
 
 `skill-creator`は、作りたいスキルの目的をヒアリングしながらSKILL.mdのひな形を生成し、テストケースの作成・実行や、descriptionが意図通りに発動するかの検証まで対話的に進めてくれます。プラグインの仕組み(次回詳しく扱います)を使って導入し、`/skill-creator` と呼び出すか「新しいスキルを作りたい」と話しかければ自動的に発動します。今日のハンズオンも、このskill-creatorを使って進めていきます。
 
