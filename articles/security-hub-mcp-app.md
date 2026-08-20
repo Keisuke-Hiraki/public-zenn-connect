@@ -1,5 +1,5 @@
 ---
-title: "Exposure Finding の severity は「優先度」ではなかった - Security Hub MCP App の活用イメージを実機で考える"
+title: "Security Hub MCP App × Claude Desktop の機能が追加されたので使い所を考えてみた"
 emoji: "🔍"
 type: "tech"
 topics: ["aws", "securityhub", "mcp", "claude", "security"]
