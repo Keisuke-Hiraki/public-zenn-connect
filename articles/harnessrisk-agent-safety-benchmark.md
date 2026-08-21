@@ -3,13 +3,15 @@ title: "HarnessRisk を読んで、AI エージェントの実行基盤（ハー
 emoji: "🛠️"
 type: "tech"
 topics: ["security", "llm", "aiエージェント", "mcp"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
 こんにちは、CSC の [CloudFastener](https://cloud-fastener.com/) というプロダクトで TAM のポジションで働いている平木です！
 
-AI エージェントを業務に組み込むとき、どのモデルを使うかにはそれなりに気を使うと思います。では、そのモデルを動かしている実行基盤（ハーネス）側のセキュリティについては、どこまで考えられているでしょうか？
+AI エージェントを業務に組み込むとき、どのモデルを使うかにはそれなりに気を使うと思います。
+
+では、そのモデルを動かしている実行基盤（ハーネス）側のセキュリティについては、どこまで考えられているでしょうか？
 
 2026 年 8 月 18 日に公開された `HarnessRisk: A Lifecycle-Oriented Benchmark for Agent Harness Safety` という論文は、まさにそこを言及したものです。  
 エージェントの安全性を「モデル単体」ではなく「モデル + ハーネス」という実際にデプロイされる構成単位で評価しています。
@@ -32,6 +34,8 @@ https://baiyajing.github.io/harness-risk/
 - コンテキストの各断片に信頼ラベルと出所を持たせ、自然言語では信頼レベルを格上げできない構造にする。永続化は直接書き込みではなく提案キュー経由にする
 - 検知率（Detection）を KPI にしない。測るべきは封じ込め（Containment）。自分たちのハーネスに対して Utility / ASR / Persistence / Containment を回帰テストとして回す
 :::
+
+![](/images/ChatGPT_Image_20260821_10_30_49.png)
 
 ## エージェントハーネスとは何を指すか
 
