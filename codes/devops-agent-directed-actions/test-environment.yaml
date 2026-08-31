@@ -1,0 +1,398 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Disposable test environment for verifying AWS DevOps Agent directed actions
+  against GuardDuty findings. Creates a VPC with a private workload subnet, an
+  SSM-managed EC2 instance that can generate GuardDuty DNS findings, VPC flow
+  logs, and a pre-built isolation security group used as the containment target.
+
+Parameters:
+  ProjectTag:
+    Type: String
+    Default: devops-agent-directed-actions-test
+    Description: >
+      Tag value applied to every resource. The elevated role's permissions
+      boundary keys off this value, so the agent can only mutate resources
+      that carry it.
+
+  InstanceType:
+    Type: String
+    Default: t4g.small
+
+  # Passed in explicitly because this account denies reads of the public
+  # /aws/service/ami-al2023-latest SSM parameters.
+  AmiId:
+    Type: AWS::EC2::Image::Id
+    Description: Amazon Linux 2023 arm64 AMI ID
+
+  FlowLogRetentionDays:
+    Type: Number
+    Default: 7
+
+Resources:
+  # ---------------------------------------------------------------- networking
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.20.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-vpc
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-igw
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.20.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-public
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.20.10.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-public-rt
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  NatEip:
+    Type: AWS::EC2::EIP
+    DependsOn: AttachGateway
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-nat-eip
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatEip.AllocationId
+      SubnetId: !Ref PublicSubnet
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-nat
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private-rt
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  PrivateSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref PrivateRouteTable
+
+  # The default NACL is tagged so that the agent is allowed to add deny entries
+  # to it as one of the containment actions under test.
+  PrivateNetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private-nacl
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  PrivateNaclInbound:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateNetworkAcl
+      RuleNumber: 32000
+      Protocol: -1
+      RuleAction: allow
+      Egress: false
+      CidrBlock: 0.0.0.0/0
+
+  PrivateNaclOutbound:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateNetworkAcl
+      RuleNumber: 32000
+      Protocol: -1
+      RuleAction: allow
+      Egress: true
+      CidrBlock: 0.0.0.0/0
+
+  PrivateNaclAssociation:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      NetworkAclId: !Ref PrivateNetworkAcl
+
+  # ------------------------------------------------------------ security groups
+  WorkloadSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Normal operating security group for the test workload
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 10.20.0.0/16
+          Description: SSH from inside the VPC
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-workload-sg
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  # Pre-built containment target. Keeping this ready means the agent only needs
+  # one approval to isolate an instance instead of two (create, then attach).
+  IsolationSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Quarantine security group - no ingress, no usable egress
+      VpcId: !Ref Vpc
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 127.0.0.1/32
+          Description: Placeholder so that no real egress is permitted
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-isolation-sg
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  # --------------------------------------------------------------- ec2 instance
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref InstanceRole
+
+  TestInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: !Ref InstanceType
+      SubnetId: !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref WorkloadSecurityGroup
+      IamInstanceProfile: !Ref InstanceProfile
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -eux
+          dnf install -y bind-utils amazon-cloudwatch-agent
+          cat > /opt/aws/amazon-cloudwatch-agent/etc/config.json <<'CFG'
+          {
+            "logs": {
+              "logs_collected": {
+                "files": {
+                  "collect_list": [
+                    {
+                      "file_path": "/var/log/messages",
+                      "log_group_name": "${AWS::StackName}/os/messages",
+                      "log_stream_name": "{instance_id}"
+                    },
+                    {
+                      "file_path": "/var/log/secure",
+                      "log_group_name": "${AWS::StackName}/os/secure",
+                      "log_stream_name": "{instance_id}"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+          CFG
+          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+            -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/config.json
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-victim
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  # ------------------------------------------------------------------ flow logs
+  FlowLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/vpc/flowlogs/${AWS::StackName}
+      RetentionInDays: !Ref FlowLogRetentionDays
+
+  FlowLogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: WriteFlowLogs
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogStreams
+                Resource: !GetAtt FlowLogGroup.Arn
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  FlowLog:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      ResourceId: !Ref Vpc
+      ResourceType: VPC
+      TrafficType: ALL
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref FlowLogGroup
+      DeliverLogsPermissionArn: !GetAtt FlowLogRole.Arn
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  # ------------------------------------------- non-EC2 containment action targets
+  # Deliberately created with public access block disabled so that
+  # s3:PutBucketPublicAccessBlock is a meaningful action to ask the agent for.
+  # The bucket stays empty and has no bucket policy, so nothing is exposed.
+  TestBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-target-${AWS::AccountId}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+
+  # Empty IP set, not attached to any web ACL. Stands in for the "block the
+  # attacker source IP at the edge" containment action.
+  TestIpSet:
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Name: !Sub ${AWS::StackName}-blocklist
+      Scope: REGIONAL
+      IPAddressVersion: IPV4
+      Addresses: []
+      Description: Blocklist used to verify DevOps Agent directed actions
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+
+Outputs:
+  InstanceId:
+    Value: !Ref TestInstance
+  InstanceRoleArn:
+    Value: !GetAtt InstanceRole.Arn
+  TestBucketName:
+    Value: !Ref TestBucket
+  TestIpSetArn:
+    Value: !GetAtt TestIpSet.Arn
+  TestIpSetId:
+    Value: !GetAtt TestIpSet.Id
+  WorkloadSecurityGroupId:
+    Value: !Ref WorkloadSecurityGroup
+  IsolationSecurityGroupId:
+    Value: !Ref IsolationSecurityGroup
+  NetworkAclId:
+    Value: !Ref PrivateNetworkAcl
+  VpcId:
+    Value: !Ref Vpc
+  FlowLogGroupName:
+    Value: !Ref FlowLogGroup
+  ProjectTag:
+    Value: !Ref ProjectTag

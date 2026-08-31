@@ -4,3 +4,4 @@ node_modules
 presentations/**/dist/
 presentations/**/.slidev/
 .playwright-mcp/
+codes/**/.verify/
