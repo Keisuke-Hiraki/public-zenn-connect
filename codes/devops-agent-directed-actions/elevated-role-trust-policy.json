@@ -14,10 +14,10 @@
       ],
       "Condition": {
         "StringEquals": {
-          "aws:SourceAccount": "781863586106"
+          "aws:SourceAccount": "XXXXXXXXXXXX"
         },
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:aidevops:ap-northeast-1:781863586106:agentspace/*"
+          "aws:SourceArn": "arn:aws:aidevops:ap-northeast-1:XXXXXXXXXXXX:agentspace/*"
         }
       }
     }

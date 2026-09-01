@@ -38,15 +38,15 @@
       "Effect": "Allow",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::devops-agent-da-test-target-781863586106",
-        "arn:aws:s3:::devops-agent-da-test-target-781863586106/*"
+        "arn:aws:s3:::devops-agent-da-test-target-XXXXXXXXXXXX",
+        "arn:aws:s3:::devops-agent-da-test-target-XXXXXXXXXXXX/*"
       ]
     },
     {
       "Sid": "CeilingPassRoleForTestInstanceProfileOnly",
       "Effect": "Allow",
       "Action": "iam:PassRole",
-      "Resource": "arn:aws:iam::781863586106:role/devops-agent-da-test-InstanceRole-O3b4b4MmmDiQ"
+      "Resource": "arn:aws:iam::XXXXXXXXXXXX:role/devops-agent-da-test-InstanceRole-O3b4b4MmmDiQ"
     },
     {
       "Sid": "DenyMutationsOnUntaggedExistingResources",
@@ -101,7 +101,7 @@
           "ec2:Vpc": "false"
         },
         "StringNotEquals": {
-          "ec2:Vpc": "arn:aws:ec2:ap-northeast-1:781863586106:vpc/vpc-02eefa43a8538275d"
+          "ec2:Vpc": "arn:aws:ec2:ap-northeast-1:XXXXXXXXXXXX:vpc/vpc-02eefa43a8538275d"
         }
       }
     },
