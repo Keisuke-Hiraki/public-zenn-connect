@@ -1,9 +1,9 @@
 ---
-title: "GuardDuty × DevOps Agent エージェントアクションにより、ついに調査から封じ込めまでできる世界線が来た！"
+title: "GuardDuty × DevOps Agent エージェントアクションにより、ついに調査から封じ込めまでできる世界線が来るかもしれない"
 emoji: "🛡️"
 type: "tech"
 topics: ["aws", "guardduty", "devopsagent", "security"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
@@ -85,21 +85,26 @@ flowchart TD
 
 ### エージェントの権限はどこで決まるのか
 
-封じ込めの成否を左右するのがここなので、権限モデルだけ先に押さえておきます。1 回の封じ込め依頼が実行されるまでに、4 つの関門を順に通過する必要があります。
+封じ込めの成否を左右するのがここなので、権限モデルだけ先に押さえておきます。
+
+1 回の封じ込め依頼が実行されるまでに、4 つの関門を順に通過する必要があります。
 
 ```mermaid
 flowchart TD
-    START["オペレーターが\nチャットで封じ込めを指示"] --> CEIL{"① 天井\nElevated Role の権限ポリシーで\n許可されているか"}
+    START["オペレーターが\nチャットで封じ込めを指示"] --> CEIL{"① 天井\nElevated Role の権限ポリシーで許可されているか"}
     CEIL -- "No（AccessDenied）" --> DENY1["❌ 実行不可"]
     CEIL -- Yes --> SUPPORT{"② サポート対象\nView Supported Actions\nの一覧に載っているか"}
     SUPPORT -- "No（未サポート）" --> DENY2["❌ 実行不可\n承認パネルも出ない"]
     SUPPORT -- Yes --> APPROVE["③ 承認\n承認パネルが表示され\nオペレーターが承認"]
     APPROVE --> GUARD{"④ ガードレール\n削除系 / boundary 変更 /\niam:PassRole を伴わないか"}
     GUARD -- 抵触する --> DENY3["❌ 実行不可\n承認しても覆せない"]
-    GUARD -- 抵触しない --> EXEC["✅ 実行\n1 オペレーションに絞られた\nセッションポリシーで実行"]
+    GUARD -- 抵触しない --> EXEC["✅ 実行\n1 オペレーションに絞られたセッションポリシーで実行"]
 ```
 
-①の天井が Elevated Role の権限ポリシーで、そのアカウントでエージェントが実行しうる操作の上限を決めます。エージェントはこの天井いっぱいまでは動かず、③で承認されるごとに、その操作専用に絞り込まれたクレデンシャル（セッションポリシー）が発行される仕組みです。また Elevated Role を登録していないアカウントは読み取り専用のままなので、調査は全アカウント横断で行い、封じ込めは特定アカウントだけ許可する、という段階的な導入もできます。
+①の天井が Elevated Role の権限ポリシーで、そのアカウントでエージェントが実行しうる操作の上限を決めます。
+
+エージェントはこの天井いっぱいまでは動かず、③で承認されるごとに、その操作専用に絞り込まれたクレデンシャル（セッションポリシー）が発行される仕組みです。  
+また Elevated Role を登録していないアカウントは読み取り専用のままなので、調査は全アカウント横断で行い、封じ込めは特定アカウントだけ許可する、という段階的な導入もできます。
 
 この「絞り込み」の実体が気になったので、CloudTrail の `AssumeRole` イベントから実際に渡されているセッションポリシーを取り出してみました。スナップショット作成を承認したときのものがこれです。
 
@@ -107,38 +112,100 @@ flowchart TD
 {
   "Version": "2012-10-17",
   "Statement": [
-    { "Effect": "Allow", "Action": "ec2:CreateSnapshot", "Resource": "*",
-      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-1"}} },
-    { "Effect": "Allow", "Action": ["app-integrations:TagResource", "... 各サービスの TagResource が延々と ..."],
-      "Resource": "*", "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-1"}} },
-    { "Effect": "Allow", "Action": ["ec2:DescribeImages", "ec2:DescribeSnapshots", "route53:GetHostedZone", "s3:ListAllMyBuckets"],
-      "Resource": "*", "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-1"}} },
-    { "Effect": "Allow", "Action": "*", "Resource": "*",
-      "Condition": {"Bool": {"aws:ViaAWSService": "true"}} }
+    {
+      "Effect": "Allow",
+      "Action": "ec2:CreateSnapshot",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "ap-northeast-1"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:TagResource",
+        "... 各サービスの TagResource が延々と ..."
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "ap-northeast-1"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeImages",
+        "ec2:DescribeSnapshots",
+        "route53:GetHostedZone",
+        "s3:ListAllMyBuckets"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "ap-northeast-1"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "aws:ViaAWSService": "true"
+        }
+      }
+    }
   ]
 }
 ```
 
-絞られているのは**オペレーションとリージョンだけで、`Resource` は `*`** でした。「対象リソース 1 個だけに絞ったクレデンシャル」を発行しているわけではありません。セッションの有効期間は `durationSeconds: 900`（15 分）です。リソースの限定は承認オブジェクト側の `argumentPins` で行われる建て付けなので、最後のリソース単位の歯止めは①の天井（IAM ポリシーや permissions boundary）に依存する、と理解しておいた方が安全です。最後の `aws:ViaAWSService` 付きの全許可も、サービス経由の間接呼び出しを通すための穴なので、天井を狭く書く動機がここでも出てきます。
+絞られているのは**オペレーションとリージョンだけで、`Resource` は `*`** でした。  
+「対象リソース 1 個だけに絞ったクレデンシャル」を発行しているわけではありません。  
+セッションの有効期間は `durationSeconds: 900`（15 分）です。
+
+リソースの限定は承認オブジェクト側の `argumentPins` で行われる建て付けなので、最後のリソース単位の歯止めは①の天井（IAM ポリシーや permissions boundary）に依存する、と理解しておいた方が安全です。最後の `aws:ViaAWSService` 付きの全許可も、サービス経由の間接呼び出しを通すための穴なので、天井を狭く書く動機がここでも出てきます。
 
 ①天井の作り方は 2 択です。
 
 | 選択肢 | 内容 |
 | --- | --- |
-| 管理ポリシー `AIDevOpsAgentActionsPolicy` | `NotAction` で全アクション・全リソースを許可するかなり広いポリシー。ID・認証・組織管理系のサービス（`account:*` / `cognito-identity:*` / `iam:*` / `identitystore:*` / `organizations:*` / `ram:*` / `rolesanywhere:*` / `sso:*` / `sts:*`）は除外。ただし `iam:ListRoles` / `sts:DecodeAuthorizationMessage` / `organizations:DescribeOrganization` など、調査に必要な読み取り系だけは別ステートメントで戻されています |
+| 管理ポリシー `AIDevOpsAgentActionsPolicy` | `NotAction` で全アクション・全リソースを許可するかなり広いポリシー。ID・認証・組織管理系のサービス（`account:*` / `cognito-identity:*` / `iam:*` / `identitystore:*` / `organizations:*` / `ram:*` / `rolesanywhere:*` / `sso:*` / `sts:*`）は除外。<br>ただし `iam:ListRoles` / `sts:DecodeAuthorizationMessage` / `organizations:DescribeOrganization` など、調査に必要な読み取り系だけは別ステートメントで戻されています |
 | カスタマー管理ポリシー | 天井を自分で狭く書く。本番運用ならこちらが現実的 |
 
 :::message alert
 管理ポリシーが `iam:*` を除外している点は、セキュリティ運用ではかなり重要です。そのまま使う構成では、アクセスキーの無効化のような IAM 系の封じ込めが 1 つもできません。後半で、カスタムポリシーで許可したらどうなるかまで検証しています。
 :::
 
-②のサポート対象アクション一覧は、天井とは別に効いてくる制約です。エージェントがセッションポリシーを組み立てる際に使えるアクションは、AWS DevOps Agent がメンテナンスしているこの一覧に限られていて、ここに無いアクションはロール側で許可していても実行できません。一覧はコンソールの `Configuration` ページ → `Agent Actions` セクション → `View Supported Actions` から確認できます（日本語ロケールだと「エージェントが実行できるアクション」と表示されます）。封じ込めの設計をする前に一度眺めておくのがおすすめです。
+②のサポート対象アクション一覧は、天井とは別に効いてくる制約です。
+
+エージェントがセッションポリシーを組み立てる際に使えるアクションは、AWS DevOps Agent がメンテナンスしているこの一覧に限られていて、ここに無いアクションはロール側で許可していても実行できません。  
+一覧はコンソールの `Configuration` ページ → `Agent Actions` セクション → `View Supported Actions` から確認できます。封じ込めの設計をする前に一度眺めておくのがおすすめです。
 
 ![](/images/Screenshot_2026-09-01_at_02-24-55.png)
 
-一覧には 181 サービス分（13 ページ）が並んでいて、画面上部にも「This is a curated set, not every AWS action.」と明記されています。数だけ見ると広いのですが、封じ込めで使いたいアクションが入っているかは別の話でした。
+一覧には執筆時点では、 181 サービス分（13 ページ）が並んでいて、画面上部にも「This is a curated set, not every AWS action.」と明記されています。数だけ見ると広いのですが、封じ込めで使いたいアクションが入っているかは別の話でした。
 
-実際にこの一覧を確認したところ、`ec2:ModifyInstanceAttribute` / `ec2:CreateSnapshot` / `ec2:StopInstances` / `ec2:CreateNetworkAclEntry` / `ec2:TerminateInstances` は含まれていましたが、`ec2:RevokeSecurityGroupIngress` / `s3:PutBucketPublicAccessBlock` / `iam:UpdateAccessKey` は含まれていませんでした。つまり「拒否される」操作には、上の図の②と④という性質の違う 2 つのパターンが混ざっています。
+実際にこの一覧を確認したところ、
+
+- `ec2:ModifyInstanceAttribute`
+- `ec2:CreateSnapshot`
+- `ec2:StopInstances`
+- `ec2:CreateNetworkAclEntry`
+- `ec2:TerminateInstances`
+ 
+は含まれていましたが、
+
+- `ec2:RevokeSecurityGroupIngress`
+- `s3:PutBucketPublicAccessBlock`
+- `iam:UpdateAccessKey`
+
+は含まれていませんでした。  
+つまり「拒否される」操作には、上の図の②と④という性質の違う 2 つのパターンが混ざっています。
 
 | | ②で拒否（未サポート） | ④で拒否（本当のガードレール） |
 | --- | --- | --- |
@@ -181,7 +248,8 @@ flowchart TD
 
 承認リクエストはチャットにしか出ません。自律調査の最中にエージェントが変更操作を呼び出そうとすると、承認を求めるのではなくその呼び出し自体が失敗します。
 
-前回記事の冒頭で「深夜 2 時に GuardDuty のアラートが飛んできたとき、誰が調査しますか？」という問いを立てました。エージェントアクションが来た今、この問いはこう更新されます。調査は深夜 2 時でも AI が勝手にやってくれますが（前回検証済み）、封じ込めは深夜 2 時に起きた人間がチャットで指示して承認するまで動きません。
+前回記事の冒頭で「深夜 2 時に GuardDuty のアラートが飛んできたとき、誰が調査しますか？」という問いを立てました。  
+エージェントアクションが来ましたが、調査は深夜 2 時でも AI が勝手にやってくれますが（前回検証済み）、封じ込めは深夜 2 時に起きた人間がチャットで指示して承認するまで動きません。
 
 「AI が自律的に検知から封じ込めまで完了させる」という運用は、現時点の DevOps Agent では設計上できません。制約というより意図的な安全設計だと思いますが、期待値としては正しく持っておく必要があります。
 
@@ -234,10 +302,6 @@ Elevated Role の構成は以下です。
 | Permissions boundary | 自作の `DevOpsAgentDirectedActionsTestBoundary`（ABAC） |
 | 信頼ポリシー | `aidevops.amazonaws.com` に `sts:AssumeRole` / `sts:SetSourceIdentity` / `sts:TagSession` |
 
-有効化はコンソール操作なしで CLI から完結しますが、`GetAgentSpace` のレスポンスに `preferences` は現れないため、有効化できたか CLI で確かめる手段はありません。実際にチャットで封じ込めを依頼して承認パネルが出るかで確認するしかない点は、最初にハマりました。
-
-一方 Elevated Role の方は、Agent Space の関連付けに登録するとその場で検証が走ります。CLI で確認すると `agentElevatedRoleArnStatus` が即座に `valid` になり、信頼ポリシーの不備は登録時点で分かるので、設定して放置したら実は無効だった、という事故は起きにくい作りです。
-
 ### 権限の天井を ABAC で囲う
 
 管理ポリシー `AIDevOpsAgentActionsPolicy` は `iam:*` などを除くほぼ全アクション・全リソースを許可します。検証用アカウントとはいえ他のワークロードも動いているので、これを単体で付けるのはリスクが高すぎます。
@@ -276,7 +340,12 @@ Elevated Role の構成は以下です。
 ```
 
 :::message alert
-この Deny 文を書くのに 2 回失敗しました。最初は `"Resource": "*"` で書いたのですが、これだと `ec2:CreateSecurityGroup` のような作成系の API まで拒否されます。`StringNotEquals` は条件キーが存在しない場合にもマッチするため、まだ作られていないリソースには `aws:ResourceTag/Project` が存在せず「タグが一致しない」と評価されて Deny が刺さってしまうのです。そこで `Resource` を既存リソースのタイプ単位に絞ったのですが、それでも `security-group/*` が対象に入っているので `CreateSecurityGroup` は通りませんでした。最終的に `NotAction` に `ec2:CreateSecurityGroup` を明示的に足して解決しています。ABAC で Deny を書くときの定番の落とし穴なので、封じ込め用の boundary を書く方はご注意ください。
+この Deny 文を書くのに 2 回失敗しました。  
+最初は `"Resource": "*"` で書いたのですが、これだと `ec2:CreateSecurityGroup` のような作成系の API まで拒否されます。`StringNotEquals` は条件キーが存在しない場合にもマッチするため、まだ作られていないリソースには `aws:ResourceTag/Project` が存在せず「タグが一致しない」と評価されて Deny が刺さってしまうのです。
+
+そこで `Resource` を既存リソースのタイプ単位に絞ったのですが、それでも `security-group/*` が対象に入っているので `CreateSecurityGroup` は通りませんでした。
+
+最終的に `NotAction` に `ec2:CreateSecurityGroup` を明示的に足して解決しています。ABAC で Deny を書くときの定番の落とし穴なので、封じ込め用の boundary を書く方はご注意ください。
 :::
 
 `NotAction` で穴を開けた分は、別の Deny 文で塞ぎ直しています。あわせて、後で効いてくる Deny も含めて 3 本追加しました。
@@ -316,11 +385,10 @@ dig GuardDutyC2ActivityB.com
 
 8 件の Finding から DevOps Agent 側には 8 個のタスクが作られ（Runtime と EC2 で別イベントとして飛ぶため、Finding 数とタスク数は今回一致）、Triage Agent がこれを処理した結果は 1 件の `COMPLETED`（本体）＋ 7 件の `LINKED`（重複判定）に集約されました。
 
-さらに T+16 分ごろ、`AttackSequence:EC2/CompromisedInstanceGroup`（Severity 9.0）のタスクが追加され、これも既存の調査に `LINKED` されています。この `AttackSequence` は単一インスタンスの相関ではなく、同じ IAM インスタンスプロファイルを共有する 2 台の EC2 インスタンス（インスタンス A とインスタンス B）が同時期に同種の攻撃を受けている、というインスタンスを跨いだ相関検知でした。実際に Finding の `Sequence.Resources` を見ると、`IAM_INSTANCE_PROFILE` 1 件と `EC2_INSTANCE` 2 件が相関の根拠として並んでいます。検証用の使い捨てインスタンスをテンプレートから複製すると IAM インスタンスプロファイルまで共有されるため、GuardDuty の機械学習エンジンにはこれが「侵害されたインスタンスグループ」として見えたようです。テスト環境の作り方が検知結果そのものに影響してくるとは思っていませんでした。
+さらに +16 分ごろ、`AttackSequence:EC2/CompromisedInstanceGroup`（Severity 9.0）のタスクが追加され、これも既存の調査に `LINKED` されています。  
+この `AttackSequence` は単一インスタンスの相関ではなく、同じ IAM インスタンスプロファイルを共有する 2 台の EC2 インスタンス（インスタンス A とインスタンス B）が同時期に同種の攻撃を受けている、というインスタンスを跨いだ相関検知でした。
 
-:::message
-この `AttackSequence` は厳密には「新規発生」ではありませんでした。Finding 自体の `CreatedAt` は前日（環境を作り込んでいた時間帯）で、今回のテストで `UpdatedAt` が 02:09:08 に更新され、`Signals` が 12 件に増えたことで EventBridge に再度流れています。後述する GuardDuty の重複抑制がここでも効いていて、`AttackSequence` は同じシーケンスが続く限り新しい Finding にはならず既存 Finding が育っていく挙動でした。DevOps Agent 側は更新イベントでもタスクを作るので、調査には反映されます。
-:::
+実際に Finding の `Sequence.Resources` を見ると、`IAM_INSTANCE_PROFILE` 1 件と `EC2_INSTANCE` 2 件が相関の根拠として並んでいます。検証用の使い捨てインスタンスをテンプレートから複製すると IAM インスタンスプロファイルまで共有されるため、GuardDuty の機械学習エンジンにはこれが「侵害されたインスタンスグループ」として見えたようです。テスト環境の作り方が検知結果そのものに影響してくるとは思っていませんでした。
 
 ![](/images/Screenshot_2026-09-01_at_02-27-31.png)
 
@@ -410,7 +478,7 @@ CloudTrail から SSM SendCommand の実行者・実行時刻・コマンド ID�
 この「エージェント側の痕跡がゼロ」という性質は、原因の切り分けにそのまま使えます。CloudTrail に何も残らないならエージェント側の層（ガードレール、または変更ツールを呼ばない自律調査フロー）で止まっていて、`AccessDenied` が残るなら権限の天井（Elevated Role の権限ポリシーや permissions boundary）で止まっている。「動かない」ときにどちらを疑うべきかが CloudTrail を見るだけで判別できます。
 :::
 
-なお `ListRecommendations` API も空でした。自律調査の成果物は「調査結果 ＋ 手順書」であって「実行可能なアクション」ではない、と理解するのが正確だと思います。
+自律調査の成果物は「調査結果 ＋ 手順書」であって「実行可能なアクション」ではない、と理解するのが正確だと思います。
 
 ### ステップ 4: チャットで封じ込めを指示する
 
@@ -544,7 +612,8 @@ with an explicit deny in a permissions boundary: DevOpsAgentDirectedActionsTestB
 ```
 
 :::message alert
-エージェントの機能不足やガードレールではなく、検証環境のタグ付け漏れが原因でした。「封じ込めが失敗した」という結果を見たときは、エージェント側のガードレール／サポート対象アクション一覧に無い／権限の天井（permissions boundary や IAM ポリシー）のどれで止まっているかを CloudTrail のエラーメッセージから切り分けるのが大事だと、あらためて実感しました。今回は `explicit deny in a permissions boundary` という明確な文言が出ていたので、切り分け自体は数分で終わっています。
+エージェントの機能不足やガードレールではなく、検証環境のタグ付け漏れが原因でした。  
+「封じ込めが失敗した」という結果を見たときは、エージェント側のガードレール／サポート対象アクション一覧に無い／権限の天井（permissions boundary や IAM ポリシー）のどれで止まっているかを CloudTrail のエラーメッセージから切り分けるのが大事だと、あらためて実感しました。今回は `explicit deny in a permissions boundary` という明確な文言が出ていたので、切り分け自体は AI を活用し数分で終わっています。
 :::
 
 ![](/images/Screenshot_2026-09-01_at_00-18-05.png)
@@ -839,6 +908,9 @@ https://awsapichanges.com/archive/changes/65de2a-aidevops.html
 
 その線引きの位置は、触ってみないと分かりませんでした。一覧にあるのに拒否される本当のガードレールと、単に未サポートなだけの拒否が同じ断り方で返ってきますし、監査で頼れるのも実質 `sourceIdentity` だけです。任せる範囲を決めるなら、一度総当たりで確認しておく価値があります。
 
-そして今回いちばんの教訓は、確認用のスクリプトが承認そのものを自動化してしまったことです。人間の承認が最後の砦になっている機能では、効率化のつもりの自動化がその砦を回避してしまいます。実行までやれるが人間の承認は外さない、という割り切りの明確さと、実測しないと分からないことの多さが、そのまま印象に残りました。
+これまでの AWS ではどうしても調査や検知止まりのサービスが多い中、  
+ついに AWS でも変更を伴う作業を承認が必要とはいえできるようになったのは進歩です。
+
+ゆくゆくは、特定の条件下だと承認不要にできたり、Slack 連携が強化され承認しやすくなるのかなと思うと楽しみです。
 
 この記事がどなたかの役に立つと嬉しいです。
