@@ -20,9 +20,10 @@ AI がアラートを受信した瞬間から自律的に調査を開始し、�
 
 :::message
 **追記（2026年9月）**: 本記事執筆時点では「調査と提案まで」で、実行（セキュリティグループの変更やインスタンス隔離）は人間が行う必要がありました。  
-その後追加された「エージェントアクション（Directed Actions）」機能により、人間の承認を挟んだ上でこれらの封じ込め操作を DevOps Agent に代行実行させられるようになりました。続編で検証していますので最新はこちらをご参照ください。
-[GuardDuty × DevOps Agent エージェントアクションにより、ついに調査から封じ込めまでできる世界線が来るかもしれない](https://zenn.dev/cscloud_blog/articles/devops-agent-guardduty-directed-actions)
+その後追加された「エージェントアクション（Directed Actions）」機能により、人間の承認を挟んだ上でこれらの封じ込め操作を DevOps Agent に代行実行させられるようになりました。続編で検証していますので最新は下記ブログもご参照ください。
 :::
+
+https://zenn.dev/cscloud_blog/articles/devops-agent-guardduty-directed-actions
 
 ## 3 点まとめ
 
