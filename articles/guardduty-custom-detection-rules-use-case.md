@@ -3,7 +3,7 @@ title: "GuardDuty の Custom Detection Rules は「ルールを書く」ので�
 emoji: "🚨"
 type: "tech"
 topics: ["aws", "guardduty", "security"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
@@ -212,6 +212,6 @@ Custom Detection Rules で有効化できるのは、AWS が MITRE ATT&CK ベー
 
 ただ、この機能が引き受けているのは、アカウントごとの正常と異常の線引きです。自分の環境で起きるはずのない操作があるなら、それを異常として宣言して、AWS が用意した検知ロジックに乗せて監視できます。Dry Run で影響を測ってから Live に倒す手順も、委任管理者への権限集約も、その線引きを組織として運用するための設計です。
 
-まずは `ListCustomDetectionRules` でカタログを一覧して、発見的統制のために自作した Config ルールや EventBridge ルールと突き合わせてみてください。重複が見つかったら、Dry Run で 14 日間だけ並走させてメトリクスを比べる。それが一番安全な入口だと思います。
+まずはルール一覧を確認して、発見的統制のために自作した Config ルールや EventBridge ルールと突き合わせてみてください。重複が見つかったら、Dry Run で 14 日間だけ並走させてメトリクスを比べる。それが一番安全な入口だと思います。
 
 この記事がどなたかの役に立つと嬉しいです。
