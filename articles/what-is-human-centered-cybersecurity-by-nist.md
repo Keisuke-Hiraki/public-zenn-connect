@@ -1,8 +1,8 @@
 ---
 title: "NIST の「人間中心のサイバーセキュリティ（HCC）」をクラウドセキュリティ運用に当てはめて考える"
 emoji: "🤝"
-type: "tech"
-topics: ["security", "nist", "cybersecurity", "ux"]
+type: "idea"
+topics: ["security", "nist", "cybersecurity"]
 published: true
 publication_name: cscloud_blog
 ---
