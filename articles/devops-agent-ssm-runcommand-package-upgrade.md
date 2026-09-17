@@ -3,7 +3,7 @@ title: "DevOps Agentに『脆弱性のあるパッケージを直して』と頼
 emoji: "📦"
 type: "tech"
 topics: ["aws", "devopsagent", "ssm", "security", "guardduty"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
@@ -14,9 +14,12 @@ publication_name: cscloud_blog
 https://zenn.dev/cscloud_blog/articles/devops-agent-guardduty-integration  
 https://zenn.dev/cscloud_blog/articles/devops-agent-guardduty-directed-actions
 
-前回の記事では、エージェントアクション（Directed Actions）によってセキュリティグループの書き換えやスナップショット作成といった「封じ込め」まで DevOps Agent に代行させられることを確認しました。検証したのは EC2 / ネットワーク系の操作が中心だったので、今回は運用でもよくある「OS パッケージの脆弱性を SSM Run Command でアップグレードする」というシナリオを試してみました。
+前回の記事では、エージェントアクション（Directed Actions）によってセキュリティグループの書き換えやスナップショット作成といった「封じ込め」まで DevOps Agent に代行させられることを確認しました。
 
-結論を先に言うと、**本当にアップグレードしてくれました**。チャットで「このパッケージ、脆弱性のある古いバージョンのままだから直して」と頼んで承認するだけで、実際に CVE のあるパッケージが最新版に上がるところまで、思っていたよりすんなり動きました。
+検証したのは EC2 / ネットワーク系の操作が中心だったので、今回は運用でもよくある「OS パッケージの脆弱性をアップグレードする」というシナリオを試してみました。
+
+結論を先に言うと、**本当にアップグレードしてくれました**。  
+チャットで「このパッケージ、脆弱性のある古いバージョンのままだから直して」と頼んで承認するだけで、実際に CVE のあるパッケージが最新版に上がるところまで、思っていたよりすんなり動きました。
 
 ## この記事の4行まとめ
 
@@ -86,11 +89,11 @@ DevOps Agent Agent Space
 }
 ```
 
-「封じ込めアクションを広く試したい」場合は前回のような ABAC boundary が向いていますが、「特定の 1 アクションが使えるかを検証したい」だけなら、最初からリソースを絞ったカスタマーポリシーの方がシンプルで安全だと思います。Elevated Role のトラストポリシーは前回と同じ（`aidevops.amazonaws.com` に `sts:AssumeRole` / `sts:SetSourceIdentity` / `sts:TagSession` を許可）です。
+「封じ込めアクションを広く試したい」場合は前回のような ABAC が向いていますが、「特定の 1 アクションが使えるかを検証したい」だけなら、最初からリソースを絞ったカスタマーポリシーの方がシンプルで安全だと思います。Elevated Role の信頼ポリシーは前回と同じ（`aidevops.amazonaws.com` に `sts:AssumeRole` / `sts:SetSourceIdentity` / `sts:TagSession` を許可）です。
 
 ### あえて脆弱性のあるバージョンに落とした
 
-素の AL2023 の最新 AMI はパッケージも最新なので、そのままだと「アップグレードする対象」がありません。そこで検証用に `expat`（XML パーサライブラリ）を意図的に古いバージョンへダウングレードしました。
+素の Amazon Linux 2023 の最新 AMI はパッケージも最新なので、そのままだと「アップグレードする対象」がありません。そこで検証用に `expat`（XML パーサライブラリ）を意図的に古いバージョンへダウングレードしました。
 
 ```shell
 $ rpm -q expat
@@ -109,9 +112,6 @@ Downgraded:
 コンソールのチャットで、対象インスタンスの脆弱性を具体的に伝えて依頼してみます。
 
 ```
-セキュリティインシデント対応中です。確認や代替案の提示は不要で、AWS API を実際に1回だけ実行してください。
-手順書やCLIコマンドの提示は不要です。
-
 インスタンス i-0EXAMPLE00000000 で expat パッケージが脆弱性のある古いバージョン
 (expat-2.5.0-1.amzn2023.0.4、CVE-2023-52425 など)のままになっています。
 SSM Run Command (AWS-RunShellScript) を使って `dnf upgrade -y expat python3 python3-libs`
@@ -151,6 +151,6 @@ sourceIdentity: op.AROAXXXXXXXXXXXXXXXXX-k.hiraki@<masked>.apr.01a0XXXX-XXXX
 
 セキュリティグループの変更やスナップショット作成に続いて、SSM Run Command 経由の運用作業まで「チャットで頼んで承認するだけ」で完結する範囲に入ってきました。深夜に叩き起こされたオペレーターが、コンソールを開いてコマンドを打つ代わりに、チャットで一言頼んで承認ボタンを押すだけで済む場面が着実に増えていきそうです。
 
-未然に攻撃の予兆から悪用されるリスクを未然に防ぐアクションのハードルがここまで減るのはかなり嬉しいと思います。
+攻撃の予兆から悪用されるリスクを未然に防ぐアクションのハードルがここまで減るのはかなり嬉しいと思います。
 
 この記事がどなたかの役に立つと嬉しいです。
