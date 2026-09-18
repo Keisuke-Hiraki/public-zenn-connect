@@ -135,7 +135,7 @@ SSM Run Command (AWS-RunShellScript) を使って `dnf upgrade -y expat python3 
 CloudTrail にも `ssm:SendCommand` の実行が記録され、`sourceIdentity` は前回記事と同じ `op.<operator>.apr.<approvalId>` の形式で、承認したオペレーターの識別情報が付与されていました。
 
 ```
-sourceIdentity: op.AROAXXXXXXXXXXXXXXXXX-k.hiraki@<masked>.apr.01a0XXXX-XXXX
+sourceIdentity: op.AROAXXXXXXXXXXXXXXXXX-<name>@<masked>.apr.01a0XXXX-XXXX
 ```
 
 実行主体が人間の手作業から DevOps Agent に置き換わっただけで、承認という最後の踏み込みは変わらず人間側に残っていますが、実際に手を動かす部分（対象を特定し、正しいコマンドを組み立て、実行し、結果を確認する）を丸ごと任せられるのは、思っていたより実用性が高いと感じました。
