@@ -3,7 +3,7 @@ title: "Security Hub CSPM に金融業界向けのセキュリティ基準「CRI
 emoji: "🏦"
 type: "tech"
 topics: ["aws", "securityhub", "security"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
