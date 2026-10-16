@@ -3,7 +3,7 @@ title: "GuardDuty のカスタム検知ルールが Runtime Monitoring に対応
 emoji: "🐧"
 type: "tech"
 topics: ["aws", "guardduty", "security"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
