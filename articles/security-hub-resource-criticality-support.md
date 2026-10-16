@@ -3,7 +3,7 @@ title: "Security Hub にリソースの重要度（Criticality）が追加され
 emoji: "🏷️"
 type: "tech"
 topics: ["aws", "securityhub", "security"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
