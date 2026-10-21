@@ -7,6 +7,11 @@ published: true
 publication_name: cscloud_blog
 published_at: 2025-07-18 07:00
 ---
+:::message alert
+**追記（2026年10月21日）**: その後 CloudFormation に `AWS::SSM::ServiceSetting` リソースタイプが追加され、東京リージョンでも利用できるようになりました。
+CloudFormation StackSets を使って Organizations 配下の全アカウント・全リージョンへ一括適用する方法を後半の「追記: CloudFormation StackSetsで全アカウント・全リージョンに適用する」に追加しています。
+:::
+
 こんにちは、CSCの平木です！
 
 Security Hubを運用している界隈では少しざわつきましたが、
@@ -16,11 +21,6 @@ https://blog.denet.co.jp/security-hub-ssm7/?doing_wp_cron=1752822300.23075795173
 
 こちらはCriticalで検知されるため、
 一括で適用できるコマンドを調べてみました。
-
-:::message
-**追記（2026年10月）**: その後 CloudFormation に `AWS::SSM::ServiceSetting` リソースタイプが追加され、東京リージョンでも利用できるようになりました。
-CloudFormation StackSets を使って Organizations 配下の全アカウント・全リージョンへ一括適用する方法を後半の「追記: CloudFormation StackSetsで全アカウント・全リージョンに適用する」に追加しています。
-:::
 
 ## 早速コマンド
 
