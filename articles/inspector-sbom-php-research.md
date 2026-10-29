@@ -1,21 +1,22 @@
 ---
-title: "PHP2Shell の影響調査を Amazon Inspector の SBOM エクスポートと Athena で組織横断でやってみた"
+title: "PHP2Shell の影響調査を Amazon Inspector の SBOM エクスポートと Athena で組織横断で検証してみた"
 emoji: "🐘"
 type: "tech"
 topics: ["aws", "inspector", "athena", "security", "sbom"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
 こんにちは、CSC の [CloudFastener](https://cloud-fastener.com/) というプロダクトで TAM のポジションで働いている平木です！
 
-2026 年 10 月に公開された PHP の脆弱性「PHP2Shell」（CVE-2026-109618 / CVE-2026-109619）が話題になっています。こうした広く使われるソフトウェアの脆弱性が出たとき、まず知りたいのは「組織のどこに PHP が入っていて、どれが影響を受けるのか」です。
+2026 年 10 月に公開された PHP の脆弱性「PHP2Shell」（CVE-2026-109618 / CVE-2026-109619）が話題になりました。  
+こうした広く使われるソフトウェアの脆弱性が出たとき、まず知りたいのは「組織のどこに PHP が入っていて、どれが影響を受けるのか」です。
 
 Amazon Inspector には、スキャン対象リソースの SBOM（ソフトウェア部品表）を S3 にエクスポートする機能があります。AWS のブログでも、エクスポートした SBOM を Athena でクエリする方法が紹介されています。
 
 https://aws.amazon.com/jp/blogs/news/export-a-software-bill-of-materials-using-amazon-inspector/
 
-この記事では PHP のバージョンや入手元を変えた EC2、ECR のコンテナイメージ、Lambda 関数を用意しました。そのうえで組織全体の SBOM を CycloneDX と SPDX の両形式でエクスポートし、Athena で PHP2Shell の影響を調べてみました。
+この記事では PHP のバージョンや入手元を変えた EC2、ECR のコンテナイメージ、Lambda 関数を用意しました。そのうえで組織全体の SBOM を CycloneDX と SPDX の両形式でエクスポートし、Athena で PHP2Shell の影響を調査検証してみました。
 
 :::message
 この記事の4行まとめ
@@ -27,7 +28,7 @@ https://aws.amazon.com/jp/blogs/news/export-a-software-bill-of-materials-using-a
 
 ## PHP2Shell とは
 
-この章では今回調査対象にした脆弱性の概要をまとめます。
+今回調査対象にした脆弱性の概要をまとめます。
 
 PHP2Shell は PHP 本体に見つかった 2 件の脆弱性の通称です。2 件を組み合わせると、認証なしでリモートから任意のコードを実行される恐れがあります。
 
@@ -55,7 +56,7 @@ https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html
 
 ## SBOM と CycloneDX / SPDX
 
-この章では、SBOM とは何か、Inspector が対応する 2 つの形式に何の違いがあるかを整理します。
+まず SBOM とは何か、Inspector が対応する 2 つの形式に何の違いがあるかを整理します。
 
 ### SBOM とは
 
@@ -210,9 +211,9 @@ SPDX の `name` もリソースタイプごとに次の形式でした。
 | ECR | `アカウントID/ECR/リポジトリARN/sha256:イメージダイジェスト` |
 | Lambda | `アカウントID/Lambda/関数名/ランタイム` |
 
-## 検証環境
+## 試してみた
 
-この章では今回用意した環境と、EC2・ECR・Lambda それぞれの構成を説明します。
+今回用意した環境と、EC2・ECR・Lambda それぞれの構成を説明します。
 
 Organizations 配下で Inspector を有効化しており、委任管理者アカウントから組織全体の SBOM をエクスポートします。Inspector は EC2、ECR、Lambda（標準スキャン）のスキャンを有効にしています。
 
