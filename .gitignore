@@ -5,3 +5,4 @@ presentations/**/dist/
 presentations/**/.slidev/
 .playwright-mcp/
 codes/**/.verify/
+.yomiyasu/
