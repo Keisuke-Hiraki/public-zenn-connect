@@ -3,7 +3,7 @@ title: "ランサムウェア被害の復旧前にバックアップの安全性
 emoji: "🛡️"
 type: "tech"
 topics: ["aws", "security", "inspector", "guardduty", "backup"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
