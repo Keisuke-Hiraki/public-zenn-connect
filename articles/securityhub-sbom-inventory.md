@@ -14,7 +14,7 @@ publication_name: cscloud_blog
 
 https://zenn.dev/cscloud_blog/articles/inspector-sbom-php-research
 
-この方法は柔軟に調べられる一方で、S3 バケットや KMS キー、Athena のテーブルを用意する必要があり、エクスポートし直すたびにテーブルも作り直す手間がありました。
+この方法は柔軟に調べられる一方で、S3 バケットや KMS キー、Athena のテーブルを用意する必要があり、エクスポートし直すたびにテーブルも作り直す手間がありました。 
 
 そんな中、Security Hub のコンソールを見ているとインベントリの欄に SBOM が追加されていました。  
 どうやら Inspector が生成した SBOM を Security Hub が組織全体で集約し、コンソールからパッケージやリソースを検索できる機能のようです。
