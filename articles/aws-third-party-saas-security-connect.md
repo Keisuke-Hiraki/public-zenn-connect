@@ -1,9 +1,9 @@
 ---
-title: "外部 SaaS との AWS 連携で利用者側でできるセキュリティ対策 平常時の備えから有事の対応まで"
+title: "外部 SaaS に AWS へのアクセスを許可するときに考えておきたいこと"
 emoji: "🔗"
 type: "tech"
-topics: ["aws", "security", "iam", "cloudtrail", "saas"]
-published: false
+topics: ["aws", "security", "saas"]
+published: true
 publication_name: cscloud_blog
 ---
 
