@@ -3,13 +3,15 @@ title: "AWS セキュリティ成熟度モデル v3 と PCI DSS 版・AI 版の�
 emoji: "📈"
 type: "tech"
 topics: ["aws", "security", "pcidss", "ai"]
-published: false
+published: true
 publication_name: cscloud_blog
 ---
 
 こんにちは、CSC の [CloudFastener](https://cloud-fastener.com/) というプロダクトで TAM のポジションで働いている平木です！
 
-AWS 環境のセキュリティ運用で「次に何をやるか」を決めるとき、AWS セキュリティ成熟度モデル（AWS Security Maturity Model）を指針として使うケースが多くありました。これまでは v2 が主流で、v2 への更新は次の記事で紹介されています。
+皆さんは AWS のセキュリティ運用にセキュリティ成熟度モデルを使用していますか？
+
+AWS 環境のセキュリティ運用で「次に何をやるか」を決めるとき、AWS セキュリティ成熟度モデル（AWS Security Maturity Model）を指針として使うケースが多くありました。これまでは v2 が主流で、v2 への更新はクラスメソッドさんの記事で紹介されています。
 
 https://dev.classmethod.jp/articles/released-aws-security-maturity-model-v2/
 
@@ -108,7 +110,8 @@ v2 の 74 項目と v3.2.1 の 75 コントロールを突き合わせると、�
 | c3.17 | デリバリーにエージェント型セキュリティレビューを追加する | Efficient | アプリケーションセキュリティ | AWS Continuum |
 | c3.22 | マネージドインシデント対応を手配する | Efficient | インシデントレスポンス | AWS Security Incident Response |
 
-c3.8 では盗んだ認証情報で生成 AI を不正利用する LLMjacking や、プロンプトインジェクション、ロギングやガードレールの改ざんを検知対象として挙げています。c3.17 は、AI コーディングアシスタントが生成したコードや MCP サーバー、プロンプトも含めてレビューの対象にするという内容で、生成 AI を開発に使う前提で書かれています。
+c3.8 では盗んだ認証情報で生成 AI を不正利用する LLMjacking や、プロンプトインジェクション、ロギングやガードレールの改ざんを検知対象として挙げています。  
+c3.17 は、AI コーディングアシスタントが生成したコードや MCP サーバー、プロンプトも含めてレビューの対象にするという内容で、生成 AI を開発に使う前提で書かれています。
 
 一方で、削除または他のコントロールに統合されたのは次の 4 項目です。
 
@@ -163,10 +166,17 @@ https://pci.smm.security.aws.dev/en/
 
 Cloud 版との違いとして、次のような PCI DSS ならではの情報が各推奨事項に付いています。
 
-- 対応する PCI DSS のサブ要件と、テスト手順（testing procedures）
-- AWS で提示できるエビデンス
-- 責任共有の区分（customer / aws / shared）。AWS PCI DSS の OSCAL System Security Plan をもとに分類されている
-- カスタマイズドアプローチの目的（Customized Approach Objective）。対象となる要件のみ
+- `PCI sub-requirements covered`
+  - 推奨事項が対応する PCI DSS のサブ要件
+- `PCI validation`
+  - `Testing procedures`
+    - テスト手順
+  - `Evidence in AWS`
+    - AWS で提示できるエビデンス
+- 責任共有の区分（customer / aws / shared）
+  - AWS PCI DSS の OSCAL System Security Plan をもとに分類されている
+- `Customized approach`
+  - 対象となる要件のカスタマイズドアプローチの目的（`Customized Approach Objective`）
 - CDE に該当するかどうか
 
 PCI DSS v4.0.1 では要件を書かれたとおりに実装する「定義されたアプローチ」のほかに、要件の目的を満たす独自のコントロールを設計する「カスタマイズドアプローチ」を選べます。推奨事項ごとにカスタマイズドアプローチの目的が書かれているので、どちらで要件を満たすかを検討するときの材料になります。
@@ -203,9 +213,13 @@ https://ai.smm.security.aws.dev/en/
 | Generative AI agents | 生成 AI エージェント | 10 |
 | AI applications | AI アプリケーション | 8 |
 
-フェーズは Cloud 版と異なり、Foundational（ゼロからプロトタイプまで）、Enhanced（プロトタイプから本番まで）、Advanced（継続的な改善とスケール）の 3 段階です。どのケイパビリティも Model inference のコントロールの上に積み上がる前提になっています。たとえばエージェントを作るなら、推論のコントロールに加えてエージェントのコントロールを見ることになります。
+フェーズは Cloud 版と異なり、Foundational（ゼロからプロトタイプまで）、Enhanced（プロトタイプから本番まで）、Advanced（継続的な改善とスケール）の 3 段階です。  
+どのケイパビリティも Model inference のコントロールの上に積み上がる前提になっています。たとえばエージェントを作るなら、推論のコントロールに加えてエージェントのコントロールを見ることになります。
 
-各コントロールは OWASP の LLM Top 10 と Agentic Top 10 に対応付けられています。NIST AI RMF や Well-Architected Generative AI Lens との対応もあります。さらに、AWS Security Hub の AI Security Best Practices 標準のどのチェックで検証できるかも示されています。ただし Security Hub で確認できるのは暗号化やネットワーク分離などの設定面だけです。ガバナンスや人による承認、プロンプトの強化のように機械的に検出できないコントロールは対象外と書かれています。
+各コントロールは OWASP の LLM Top 10 と Agentic Top 10 に対応付けられています。NIST AI RMF や Well-Architected Generative AI Lens との対応もあります。
+
+さらに、AWS Security Hub の AI Security Best Practices 標準のどのチェックで検証できるかも示されています。  
+ただし Security Hub で確認できるのは暗号化やネットワーク分離などの設定面だけです。ガバナンスや人による承認、プロンプトの強化のように機械的に検出できないコントロールは対象外と書かれています。
 
 ### Risk test で AI のユースケースのリスクを確認する
 
@@ -223,7 +237,8 @@ https://ai.smm.security.aws.dev/en/risk-test/
 
 ![](/images/new-aws-security-maturity-model_2026-11-25-14-27-13.png)
 
-この判定は Meta AI の「Agents Rule of Two」をもとにしていて、3 つすべてに当てはまる場合は確率的なコントロールではなく決定的なコントロールを使うよう案内されています。たとえば Guardrails によるフィルタリングだけに頼らず、人による承認（c5.5）や破壊的な操作の制限（c5.8）を組み合わせる、という考え方です。AI エージェントの企画段階で、どこまで対策が必要かを関係者と話す材料として使いやすいと感じました。
+この判定は Meta AI の「Agents Rule of Two」をもとにしていて、3 つすべてに当てはまる場合は確率的なコントロールではなく決定的なコントロールを使うよう案内されています。  
+たとえば Guardrails によるフィルタリングだけに頼らず、人による承認（c5.5）や破壊的な操作の制限（c5.8）を組み合わせる、という考え方です。AI エージェントの企画段階で、どこまで対策が必要かを関係者と話す材料として使いやすいと感じました。
 
 ## 評価ツールを試す
 
@@ -241,7 +256,9 @@ https://smm.security.aws.dev/signal/self-assessment-in-the-browser/
 
 ![](/images/new-aws-security-maturity-model_2026-11-25-14-19-24.png)
 
-選べるのは Cloud SMM v3、Cloud SMM v2、PCI DSS SMM、AI SMM の 4 つです。v2 も選べるので、v2 で評価を続けている組織も同じツールを使えます。上記の SMM Signal の記事（2026 年 11 月 18 日公開）では、評価ツールが対応しているのは Cloud 版のみと書かれていました。ただ、11 月 25 日時点では PCI DSS 版と AI 版も選べるようになっていました。
+選べるのは Cloud SMM v3、Cloud SMM v2、PCI DSS SMM、AI SMM の 4 つです。v2 も選べるので、v2 で評価を続けている組織も同じツールを使えます。
+
+上記の SMM Signal の記事（2026 年 11 月 18 日公開）では、評価ツールが対応しているのは Cloud 版のみと書かれていました。ただ、11 月 25 日時点では PCI DSS 版と AI 版も選べるようになっていました。
 
 モデルを選ぶと、評価の流れを説明するダイアログが表示されます。
 
